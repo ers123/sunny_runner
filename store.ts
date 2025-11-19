@@ -42,7 +42,7 @@ interface GameState {
   activateImmortality: () => void;
 }
 
-const GEMINI_TARGET = ['G', 'E', 'M', 'I', 'N', 'I'];
+const SPARKLE_TARGET = ['S', 'P', 'A', 'R', 'K', 'L', 'E'];
 const MAX_LEVEL = 3;
 
 export const useStore = create<GameState>((set, get) => ({
@@ -130,7 +130,7 @@ export const useStore = create<GameState>((set, get) => ({
       });
 
       // Check if full word collected
-      if (newLetters.length === GEMINI_TARGET.length) {
+      if (newLetters.length === SPARKLE_TARGET.length) {
         if (level < MAX_LEVEL) {
             // Immediately advance level
             // The Shop Portal will be spawned by LevelManager at the start of the new level
