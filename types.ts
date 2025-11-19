@@ -40,14 +40,15 @@ export const RUN_SPEED_BASE = 22.5;
 export const SPAWN_DISTANCE = 120;
 export const REMOVE_DISTANCE = 20; // Behind player
 
-// Google-ish Neon Colors: Blue, Red, Yellow, Blue, Green, Red
-export const GEMINI_COLORS = [
-    '#2979ff', // G - Blue
-    '#ff1744', // E - Red
-    '#ffea00', // M - Yellow
-    '#2979ff', // I - Blue
-    '#00e676', // N - Green
-    '#ff1744', // I - Red
+// Magical Rainbow Pastel Colors for SPARKLE
+export const SPARKLE_COLORS = [
+    '#FF69B4', // S - Hot Pink
+    '#DDA0DD', // P - Plum/Light Purple
+    '#87CEEB', // A - Sky Blue
+    '#FFB6C1', // R - Light Pink
+    '#98FB98', // K - Pale Green
+    '#E6E6FA', // L - Lavender
+    '#FFE4E1', // E - Misty Rose
 ];
 
 export interface ShopItem {

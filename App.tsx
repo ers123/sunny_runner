@@ -69,11 +69,11 @@ function Scene() {
 
 function App() {
   return (
-    <div className="relative w-full h-screen bg-black overflow-hidden select-none">
+    <div className="relative w-full h-screen bg-gradient-to-b from-pink-200 via-purple-200 to-blue-200 overflow-hidden select-none">
       <HUD />
       <Canvas
         shadows
-        dpr={[1, 1.5]} 
+        dpr={[1, 1.5]}
         gl={{ antialias: false, stencil: false, depth: true, powerPreference: "high-performance" }}
         // Initial camera, matches the controller base
         camera={{ position: [0, 5.5, 8], fov: 60 }}
