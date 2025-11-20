@@ -13,16 +13,21 @@ interface GameState {
   lives: number;
   maxLives: number;
   speed: number;
-  collectedLetters: number[]; 
+  collectedLetters: number[];
   level: number;
   laneCount: number;
   gemsCollected: number;
   distance: number;
-  
+
   // Inventory / Abilities
   hasDoubleJump: boolean;
   hasImmortality: boolean;
   isImmortalityActive: boolean;
+
+  // NEW: Combo/Streak System for visual rewards
+  combo: number;
+  maxCombo: number;
+  streak: number; // Letters collected in a row
 
   // Actions
   startGame: () => void;
@@ -33,7 +38,8 @@ interface GameState {
   collectLetter: (index: number) => void;
   setStatus: (status: GameStatus) => void;
   setDistance: (dist: number) => void;
-  
+  resetCombo: () => void;
+
   // Shop / Abilities
   buyItem: (type: 'DOUBLE_JUMP' | 'MAX_LIFE' | 'HEAL' | 'IMMORTAL', cost: number) => boolean;
   advanceLevel: () => void;
@@ -56,15 +62,20 @@ export const useStore = create<GameState>((set, get) => ({
   laneCount: 3,
   gemsCollected: 0,
   distance: 0,
-  
+
   hasDoubleJump: false,
   hasImmortality: false,
   isImmortalityActive: false,
 
-  startGame: () => set({ 
-    status: GameStatus.PLAYING, 
-    score: 0, 
-    lives: 3, 
+  // Combo system
+  combo: 0,
+  maxCombo: 0,
+  streak: 0,
+
+  startGame: () => set({
+    status: GameStatus.PLAYING,
+    score: 0,
+    lives: 3,
     maxLives: 3,
     speed: RUN_SPEED_BASE,
     collectedLetters: [],
@@ -74,13 +85,16 @@ export const useStore = create<GameState>((set, get) => ({
     distance: 0,
     hasDoubleJump: false,
     hasImmortality: false,
-    isImmortalityActive: false
+    isImmortalityActive: false,
+    combo: 0,
+    maxCombo: 0,
+    streak: 0
   }),
 
-  restartGame: () => set({ 
-    status: GameStatus.PLAYING, 
-    score: 0, 
-    lives: 3, 
+  restartGame: () => set({
+    status: GameStatus.PLAYING,
+    score: 0,
+    lives: 3,
     maxLives: 3,
     speed: RUN_SPEED_BASE,
     collectedLetters: [],
@@ -90,12 +104,18 @@ export const useStore = create<GameState>((set, get) => ({
     distance: 0,
     hasDoubleJump: false,
     hasImmortality: false,
-    isImmortalityActive: false
+    isImmortalityActive: false,
+    combo: 0,
+    maxCombo: 0,
+    streak: 0
   }),
 
   takeDamage: () => {
     const { lives, isImmortalityActive } = get();
     if (isImmortalityActive) return; // No damage if skill is active
+
+    // Reset combo on damage - encourages careful play
+    set({ combo: 0, streak: 0 });
 
     if (lives > 1) {
       set({ lives: lives - 1 });
@@ -105,28 +125,42 @@ export const useStore = create<GameState>((set, get) => ({
   },
 
   addScore: (amount) => set((state) => ({ score: state.score + amount })),
-  
-  collectGem: (value) => set((state) => ({ 
-    score: state.score + value, 
-    gemsCollected: state.gemsCollected + 1 
-  })),
+
+  collectGem: (value) => set((state) => {
+    const newCombo = state.combo + 1;
+    const comboBonus = Math.floor(newCombo / 5) * 50; // +50 bonus every 5 gems!
+    return {
+      score: state.score + value + comboBonus,
+      gemsCollected: state.gemsCollected + 1,
+      combo: newCombo,
+      maxCombo: Math.max(state.maxCombo, newCombo)
+    };
+  }),
 
   setDistance: (dist) => set({ distance: dist }),
 
+  resetCombo: () => set({ combo: 0 }),
+
   collectLetter: (index) => {
-    const { collectedLetters, level, speed } = get();
-    
+    const { collectedLetters, level, speed, streak } = get();
+
     if (!collectedLetters.includes(index)) {
       const newLetters = [...collectedLetters, index];
-      
+      const newStreak = streak + 1;
+
       // LINEAR SPEED INCREASE: Add 10% of BASE speed per letter
       // This ensures 110% -> 120% -> 130% consistent steps
       const speedIncrease = RUN_SPEED_BASE * 0.10;
       const nextSpeed = speed + speedIncrease;
 
-      set({ 
+      // Streak bonus: 100 points per letter in streak!
+      const streakBonus = newStreak * 100;
+
+      set({
         collectedLetters: newLetters,
-        speed: nextSpeed
+        speed: nextSpeed,
+        streak: newStreak,
+        score: get().score + streakBonus
       });
 
       // Check if full word collected
@@ -149,9 +183,9 @@ export const useStore = create<GameState>((set, get) => ({
   advanceLevel: () => {
       const { level, laneCount, speed } = get();
       const nextLevel = level + 1;
-      
+
       // LINEAR LEVEL INCREASE: Add 40% of BASE speed per level
-      // Combined with the 6 letters (60%), this totals +100% speed per full level cycle
+      // Combined with the 7 letters (70%), this totals +110% speed per full level cycle
       const speedIncrease = RUN_SPEED_BASE * 0.40;
       const newSpeed = speed + speedIncrease;
 
@@ -160,20 +194,21 @@ export const useStore = create<GameState>((set, get) => ({
           laneCount: Math.min(laneCount + 2, 9), // Expand lanes
           status: GameStatus.PLAYING, // Keep playing, user runs into shop
           speed: newSpeed,
-          collectedLetters: [] // Reset letters
+          collectedLetters: [], // Reset letters
+          streak: 0 // Reset streak for new level
       });
   },
 
   openShop: () => set({ status: GameStatus.SHOP }),
-  
+
   closeShop: () => set({ status: GameStatus.PLAYING }),
 
   buyItem: (type, cost) => {
       const { score, maxLives, lives } = get();
-      
+
       if (score >= cost) {
           set({ score: score - cost });
-          
+
           switch (type) {
               case 'DOUBLE_JUMP':
                   set({ hasDoubleJump: true });
@@ -197,7 +232,7 @@ export const useStore = create<GameState>((set, get) => ({
       const { hasImmortality, isImmortalityActive } = get();
       if (hasImmortality && !isImmortalityActive) {
           set({ isImmortalityActive: true });
-          
+
           // Lasts 5 seconds
           setTimeout(() => {
               set({ isImmortalityActive: false });

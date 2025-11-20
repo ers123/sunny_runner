@@ -105,7 +105,7 @@ const ShopScreen: React.FC = () => {
 };
 
 export const HUD: React.FC = () => {
-  const { score, lives, maxLives, collectedLetters, status, level, restartGame, startGame, gemsCollected, distance, isImmortalityActive, speed } = useStore();
+  const { score, lives, maxLives, collectedLetters, status, level, restartGame, startGame, gemsCollected, distance, isImmortalityActive, speed, combo, maxCombo, streak } = useStore();
   const target = ['S', 'P', 'A', 'R', 'K', 'L', 'E'];
 
   // Common container style
@@ -301,8 +301,33 @@ export const HUD: React.FC = () => {
             })}
         </div>
 
+        {/* Combo/Streak Display - NEW! */}
+        {combo > 0 && (
+             <div className="absolute top-40 md:top-48 left-1/2 transform -translate-x-1/2">
+                 <div className={`bg-gradient-to-r from-yellow-400 to-orange-400 text-white px-4 py-2 rounded-full font-black text-lg md:text-xl border-4 border-white shadow-2xl ${combo >= 5 ? 'animate-pulse' : ''}`}>
+                     🔥 {combo}x COMBO!
+                 </div>
+             </div>
+        )}
+
+        {/* Streak Display for Letters - NEW! */}
+        {streak > 0 && (
+             <div className="absolute bottom-32 md:bottom-40 left-1/2 transform -translate-x-1/2">
+                 <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-3 py-1 rounded-full font-bold text-sm md:text-base border-2 border-white shadow-lg">
+                     ⭐ {streak} Letter Streak!
+                 </div>
+             </div>
+        )}
+
         {/* Bottom Overlay */}
-        <div className="w-full flex justify-end items-end">
+        <div className="w-full flex justify-between items-end">
+             {/* Left: Combo Count */}
+             {maxCombo > 0 && (
+                 <div className="bg-white/80 px-3 py-1 rounded-full border-2 border-yellow-400">
+                     <span className="text-yellow-600 font-bold text-xs md:text-sm">Best Combo: {maxCombo}x</span>
+                 </div>
+             )}
+             {/* Right: Speed */}
              <div className="flex items-center space-x-2 bg-white/80 px-3 py-1 rounded-full border-2 border-purple-300">
                  <Zap className="w-4 h-4 md:w-6 md:h-6 text-purple-500 animate-pulse" />
                  <span className="text-purple-700 font-bold text-sm md:text-lg">Speed {Math.round((speed / RUN_SPEED_BASE) * 100)}%</span>
