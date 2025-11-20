@@ -9,6 +9,7 @@ import { Heart, Zap, Trophy, MapPin, Diamond, Rocket, ArrowUpCircle, Shield, Act
 import { useStore } from '../../store';
 import { GameStatus, SPARKLE_COLORS, ShopItem, RUN_SPEED_BASE } from '../../types';
 import { audio } from '../System/Audio';
+import { FloatingTextDisplay } from './FloatingText';
 
 // Available Shop Items
 const SHOP_ITEMS: ShopItem[] = [
@@ -333,6 +334,9 @@ export const HUD: React.FC = () => {
                  <span className="text-purple-700 font-bold text-sm md:text-lg">Speed {Math.round((speed / RUN_SPEED_BASE) * 100)}%</span>
              </div>
         </div>
+
+        {/* Floating score text overlay */}
+        <FloatingTextDisplay />
     </div>
   );
 };

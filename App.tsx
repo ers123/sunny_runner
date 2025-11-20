@@ -13,6 +13,8 @@ import { LevelManager } from './components/World/LevelManager';
 import { Effects } from './components/World/Effects';
 import { HUD } from './components/UI/HUD';
 import { useStore } from './store';
+import { ScreenShake } from './components/UI/ScreenShake';
+import { AchievementTrigger } from './components/World/AchievementTrigger';
 
 // Dynamic Camera Controller
 const CameraController = () => {
@@ -55,6 +57,7 @@ function Scene() {
   return (
     <>
         <Environment />
+        <ScreenShake />
         <group>
             {/* Attach a userData to identify player group for LevelManager collision logic */}
             <group userData={{ isPlayer: true }} name="PlayerGroup">
@@ -71,6 +74,7 @@ function App() {
   return (
     <div className="relative w-full h-screen bg-gradient-to-b from-pink-200 via-purple-200 to-blue-200 overflow-hidden select-none">
       <HUD />
+      <AchievementTrigger />
       <Canvas
         shadows
         dpr={[1, 1.5]}

@@ -12,6 +12,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { useStore } from '../../store';
 import { GameObject, ObjectType, LANE_WIDTH, SPAWN_DISTANCE, REMOVE_DISTANCE, GameStatus, SPARKLE_COLORS } from '../../types';
 import { audio } from '../System/Audio';
+import { addFloatingText } from '../UI/FloatingText';
+import { showAchievement } from '../UI/AchievementPopup';
+import { triggerScreenShake } from '../UI/ScreenShake';
 
 // Geometry Constants
 const OBSTACLE_HEIGHT = 1.6;
@@ -335,13 +338,16 @@ export const LevelManager: React.FC = () => {
 
                          if (isHit) { 
                              window.dispatchEvent(new Event('player-hit'));
-                             obj.active = false; 
+                             obj.active = false;
                              hasChanges = true;
-                             
+
+                             // Screen shake on damage
+                             triggerScreenShake(0.15, 0.4);
+
                              // Visual burst for missile impact
                              if (obj.type === ObjectType.MISSILE) {
-                                window.dispatchEvent(new CustomEvent('particle-burst', { 
-                                    detail: { position: obj.position, color: '#ff4400' } 
+                                window.dispatchEvent(new CustomEvent('particle-burst', {
+                                    detail: { position: obj.position, color: '#ff4400' }
                                 }));
                              }
                          }
@@ -350,12 +356,19 @@ export const LevelManager: React.FC = () => {
                          const dy = Math.abs(obj.position[1] - playerPos.y);
                          if (dy < 2.5) { // Generous vertical pickup range
                             if (obj.type === ObjectType.GEM) {
-                                collectGem(obj.points || 50);
+                                const points = obj.points || 50;
+                                collectGem(points);
                                 audio.playGemCollect();
+                                // Show floating score text
+                                addFloatingText(`+${points}`, obj.position[0], obj.position[1], '#FFD700');
                             }
                             if (obj.type === ObjectType.LETTER && obj.targetIndex !== undefined) {
                                 collectLetter(obj.targetIndex);
                                 audio.playLetterCollect();
+                                // Show floating letter text
+                                addFloatingText('LETTER!', obj.position[0], obj.position[1], '#FF69B4');
+                                // Celebratory screen shake
+                                triggerScreenShake(0.05, 0.2);
                             }
                             
                             window.dispatchEvent(new CustomEvent('particle-burst', { 
