@@ -10,7 +10,7 @@ import * as THREE from 'three';
 import { Text3D, Center, Float } from '@react-three/drei';
 import { v4 as uuidv4 } from 'uuid';
 import { useStore } from '../../store';
-import { GameObject, ObjectType, LANE_WIDTH, SPAWN_DISTANCE, REMOVE_DISTANCE, GameStatus, GEMINI_COLORS } from '../../types';
+import { GameObject, ObjectType, LANE_WIDTH, SPAWN_DISTANCE, REMOVE_DISTANCE, GameStatus, SPARKLE_COLORS } from '../../types';
 import { audio } from '../System/Audio';
 
 // Geometry Constants
@@ -415,7 +415,7 @@ export const LevelManager: React.FC = () => {
              if (availableIndices.length > 0) {
                  const chosenIndex = availableIndices[Math.floor(Math.random() * availableIndices.length)];
                  const val = target[chosenIndex];
-                 const color = GEMINI_COLORS[chosenIndex];
+                 const color = SPARKLE_COLORS[chosenIndex];
 
                  keptObjects.push({
                     id: uuidv4(),
