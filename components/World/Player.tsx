@@ -55,16 +55,28 @@ export const Player: React.FC = () => {
   const isInvincible = useRef(false);
   const lastDamageTime = useRef(0);
 
-  // Memoized Materials - Magical pastel colors!
+  // Memoized Materials - VIBRANT colors that POP!
   const { armorMaterial, jointMaterial, glowMaterial, shadowMaterial } = useMemo(() => {
-      const armorColor = isImmortalityActive ? '#FFD700' : '#FF69B4'; // Gold when protected, hot pink normally
-      const glowColor = isImmortalityActive ? '#FFFFFF' : '#DDA0DD'; // White when protected, plum/lavender normally
+      const armorColor = isImmortalityActive ? '#FFD700' : '#FF1493'; // Gold when protected, DEEP PINK normally
+      const glowColor = isImmortalityActive ? '#FFFFFF' : '#FF69B4'; // White when protected, HOT PINK glow
 
       return {
-          armorMaterial: new THREE.MeshStandardMaterial({ color: armorColor, roughness: 0.2, metalness: 0.6 }),
-          jointMaterial: new THREE.MeshStandardMaterial({ color: '#E6E6FA', roughness: 0.4, metalness: 0.3 }), // Lavender joints
+          armorMaterial: new THREE.MeshStandardMaterial({
+              color: armorColor,
+              roughness: 0.1,
+              metalness: 0.8,
+              emissive: armorColor,
+              emissiveIntensity: 0.3 // Makes it glow!
+          }),
+          jointMaterial: new THREE.MeshStandardMaterial({
+              color: '#E6E6FA',
+              roughness: 0.3,
+              metalness: 0.5,
+              emissive: '#DDA0DD',
+              emissiveIntensity: 0.2
+          }),
           glowMaterial: new THREE.MeshBasicMaterial({ color: glowColor }),
-          shadowMaterial: new THREE.MeshBasicMaterial({ color: '#FF69B4', opacity: 0.2, transparent: true }) // Pink shadow
+          shadowMaterial: new THREE.MeshBasicMaterial({ color: '#FF1493', opacity: 0.3, transparent: true })
       };
   }, [isImmortalityActive]); // Only recreate if immortality state changes (for color shift)
 
