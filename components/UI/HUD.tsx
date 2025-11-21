@@ -9,8 +9,10 @@ import { Heart, Zap, Trophy, MapPin, Diamond, Rocket, ArrowUpCircle, Shield, Act
 import { useStore } from '../../store';
 import { GameStatus, SPARKLE_COLORS, ShopItem, RUN_SPEED_BASE } from '../../types';
 import { audio } from '../System/Audio';
+import { bgm } from '../System/BGM';
 import { FloatingTextDisplay } from './FloatingText';
 import { AchievementPopup } from './AchievementPopup';
+import { CharacterSelector } from './CharacterSelector';
 
 // Available Shop Items
 const SHOP_ITEMS: ShopItem[] = [
@@ -107,11 +109,26 @@ const ShopScreen: React.FC = () => {
 };
 
 export const HUD: React.FC = () => {
-  const { score, lives, maxLives, collectedLetters, status, level, restartGame, startGame, gemsCollected, distance, isImmortalityActive, speed, combo, maxCombo, streak } = useStore();
+  const { score, lives, maxLives, collectedLetters, status, level, restartGame, startGame, gemsCollected, distance, isImmortalityActive, speed, combo, maxCombo, streak, checkUnlocks } = useStore();
   const target = ['S', 'P', 'A', 'R', 'K', 'L', 'E'];
+  const [showCharacterSelector, setShowCharacterSelector] = useState(false);
 
   // Common container style
   const containerClass = "absolute inset-0 pointer-events-none flex flex-col justify-between p-4 md:p-8 z-50";
+
+  // BGM Control - Start music when playing, stop when game over
+  useEffect(() => {
+    if (status === GameStatus.PLAYING) {
+      bgm.start(); // Randomly selects a track
+    } else if (status === GameStatus.GAME_OVER || status === GameStatus.MENU) {
+      bgm.stop();
+    }
+  }, [status]);
+
+  // Check for character unlocks based on progress
+  useEffect(() => {
+    checkUnlocks();
+  }, [level, gemsCollected, combo, checkUnlocks]);
 
   if (status === GameStatus.SHOP) {
       return <ShopScreen />;
@@ -144,6 +161,14 @@ export const HUD: React.FC = () => {
                             🌟 Collect letters to spell SPARKLE! 🌟
                         </div>
 
+                        {/* Character Selection Button */}
+                        <button
+                          onClick={() => setShowCharacterSelector(true)}
+                          className="w-full mb-3 px-6 py-3 bg-gradient-to-r from-purple-400 to-pink-400 text-white font-bold text-lg rounded-full hover:scale-105 transition-all shadow-lg"
+                        >
+                            👤 Choose Your Runner!
+                        </button>
+
                         <button
                           onClick={() => { audio.init(); startGame(); }}
                           className="w-full group relative px-6 py-4 bg-white text-pink-600 font-black text-xl rounded-full hover:bg-pink-50 transition-all shadow-xl hover:shadow-2xl hover:scale-105 overflow-hidden"
@@ -160,6 +185,11 @@ export const HUD: React.FC = () => {
                      </div>
                 </div>
               </div>
+
+              {/* Character Selector Modal */}
+              {showCharacterSelector && (
+                <CharacterSelector onClose={() => setShowCharacterSelector(false)} />
+              )}
           </div>
       );
   }

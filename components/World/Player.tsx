@@ -8,7 +8,7 @@ import React, { useRef, useEffect, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useStore } from '../../store';
-import { LANE_WIDTH, GameStatus } from '../../types';
+import { LANE_WIDTH, GameStatus, CHARACTERS } from '../../types';
 import { audio } from '../System/Audio';
 import { ParticleTrail } from './ParticleTrail';
 
@@ -39,7 +39,7 @@ export const Player: React.FC = () => {
   const rightLegRef = useRef<THREE.Group>(null);
   const headRef = useRef<THREE.Group>(null);
 
-  const { status, laneCount, takeDamage, hasDoubleJump, activateImmortality, isImmortalityActive } = useStore();
+  const { status, laneCount, takeDamage, hasDoubleJump, activateImmortality, isImmortalityActive, selectedCharacter } = useStore();
   
   const [lane, setLane] = React.useState(0);
   const targetX = useRef(0);
@@ -56,10 +56,11 @@ export const Player: React.FC = () => {
   const isInvincible = useRef(false);
   const lastDamageTime = useRef(0);
 
-  // Memoized Materials - VIBRANT colors that POP!
+  // Memoized Materials - Use selected character colors!
   const { armorMaterial, jointMaterial, glowMaterial, shadowMaterial } = useMemo(() => {
-      const armorColor = isImmortalityActive ? '#FFD700' : '#FF1493'; // Gold when protected, DEEP PINK normally
-      const glowColor = isImmortalityActive ? '#FFFFFF' : '#FF69B4'; // White when protected, HOT PINK glow
+      const character = CHARACTERS[selectedCharacter];
+      const armorColor = isImmortalityActive ? '#FFD700' : character.primaryColor;
+      const glowColor = isImmortalityActive ? '#FFFFFF' : character.secondaryColor;
 
       return {
           armorMaterial: new THREE.MeshStandardMaterial({
@@ -77,9 +78,9 @@ export const Player: React.FC = () => {
               emissiveIntensity: 0.2
           }),
           glowMaterial: new THREE.MeshBasicMaterial({ color: glowColor }),
-          shadowMaterial: new THREE.MeshBasicMaterial({ color: '#FF1493', opacity: 0.3, transparent: true })
+          shadowMaterial: new THREE.MeshBasicMaterial({ color: character.primaryColor, opacity: 0.3, transparent: true })
       };
-  }, [isImmortalityActive]); // Only recreate if immortality state changes (for color shift)
+  }, [isImmortalityActive, selectedCharacter]); // Recreate when character or immortality changes
 
   // --- Reset State on Game Start ---
   useEffect(() => {
@@ -334,6 +335,7 @@ export const Player: React.FC = () => {
         position={groupRef.current?.position || new THREE.Vector3(0, 0, 0)}
         isJumping={isJumping.current}
         isImmortalityActive={isImmortalityActive}
+        trailColor={CHARACTERS[selectedCharacter].trailColor}
       />
     </group>
   );
