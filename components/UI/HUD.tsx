@@ -15,6 +15,7 @@ import { AchievementPopup } from './AchievementPopup';
 import { CharacterSelector } from './CharacterSelector';
 import { ShareScore } from './ShareScore';
 import { LeaderboardView } from './LeaderboardView';
+import { VolumeControl } from './VolumeControl';
 import { leaderboard } from '../System/Leaderboard';
 
 // Available Shop Items
@@ -350,26 +351,36 @@ export const HUD: React.FC = () => {
   return (
     <div className={containerClass}>
         {/* Top Bar */}
-        <div className="flex justify-between items-start w-full">
-            <div className="flex flex-col">
-                <div className="text-3xl md:text-5xl font-bold text-pink-500 drop-shadow-lg bg-white/80 px-4 py-2 rounded-2xl border-2 border-pink-300">
+        <div className="flex justify-between items-start w-full gap-2">
+            {/* Score - Left Side */}
+            <div className="flex flex-col gap-1">
+                <div className="font-bubbly text-2xl sm:text-3xl md:text-5xl font-black text-white drop-shadow-lg bg-gradient-to-r from-pink-400 to-purple-400 px-3 sm:px-4 py-2 rounded-2xl border-3 border-white shadow-xl">
                     ✨ {score.toLocaleString()}
+                </div>
+                {/* Level Badge - Below Score on Mobile */}
+                <div className="font-bold text-xs sm:text-sm md:text-base text-white bg-gradient-to-r from-purple-500 to-pink-500 px-3 py-1 rounded-full border-2 border-white shadow-lg text-center">
+                    🌟 Level {level} / 10
                 </div>
             </div>
 
-            <div className="flex space-x-1 md:space-x-2">
-                {[...Array(maxLives)].map((_, i) => (
-                    <Heart
-                        key={i}
-                        className={`w-6 h-6 md:w-8 md:h-8 ${i < lives ? 'text-pink-400 fill-pink-400 drop-shadow-lg' : 'text-gray-300 fill-gray-300'}`}
-                    />
-                ))}
+            {/* Lives - Right Side */}
+            <div className="flex flex-col gap-1 items-end">
+                <div className="flex space-x-1 bg-white/90 px-2 sm:px-3 py-2 rounded-2xl border-3 border-pink-300 shadow-xl">
+                    {[...Array(maxLives)].map((_, i) => (
+                        <Heart
+                            key={i}
+                            className={`w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 ${i < lives ? 'text-pink-400 fill-pink-400 drop-shadow-lg animate-pulse' : 'text-gray-300 fill-gray-300'}`}
+                        />
+                    ))}
+                </div>
+                {/* Gems Counter & Volume Control */}
+                <div className="flex items-center gap-2">
+                    <div className="font-bold text-xs sm:text-sm text-white bg-gradient-to-r from-blue-400 to-cyan-400 px-3 py-1 rounded-full border-2 border-white shadow-lg">
+                        💎 {gemsCollected}
+                    </div>
+                    <VolumeControl />
+                </div>
             </div>
-        </div>
-
-        {/* Level Indicator */}
-        <div className="absolute top-5 left-1/2 transform -translate-x-1/2 text-sm md:text-lg text-purple-700 font-bold tracking-wider bg-white/80 px-4 py-1 rounded-full border-2 border-purple-300 backdrop-blur-sm z-50">
-            🌟 Level {level} <span className="text-purple-500 text-xs md:text-sm">/ 3</span>
         </div>
 
         {/* Active Skill Indicator */}
