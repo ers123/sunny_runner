@@ -13,6 +13,9 @@ import { bgm } from '../System/BGM';
 import { FloatingTextDisplay } from './FloatingText';
 import { AchievementPopup } from './AchievementPopup';
 import { CharacterSelector } from './CharacterSelector';
+import { ShareScore } from './ShareScore';
+import { LeaderboardView } from './LeaderboardView';
+import { leaderboard } from '../System/Leaderboard';
 
 // Available Shop Items
 const SHOP_ITEMS: ShopItem[] = [
@@ -109,9 +112,12 @@ const ShopScreen: React.FC = () => {
 };
 
 export const HUD: React.FC = () => {
-  const { score, lives, maxLives, collectedLetters, status, level, restartGame, startGame, gemsCollected, distance, isImmortalityActive, speed, combo, maxCombo, streak, checkUnlocks } = useStore();
+  const { score, lives, maxLives, collectedLetters, status, level, restartGame, startGame, gemsCollected, distance, isImmortalityActive, speed, combo, maxCombo, streak, checkUnlocks, selectedCharacter } = useStore();
   const target = ['S', 'P', 'A', 'R', 'K', 'L', 'E'];
   const [showCharacterSelector, setShowCharacterSelector] = useState(false);
+  const [showShareScore, setShowShareScore] = useState(false);
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [isNewHighScore, setIsNewHighScore] = useState(false);
 
   // Common container style
   const containerClass = "absolute inset-0 pointer-events-none flex flex-col justify-between p-4 md:p-8 z-50";
@@ -129,6 +135,19 @@ export const HUD: React.FC = () => {
   useEffect(() => {
     checkUnlocks();
   }, [level, gemsCollected, combo, checkUnlocks]);
+
+  // Save score to leaderboard when game ends
+  useEffect(() => {
+    if (status === GameStatus.GAME_OVER || status === GameStatus.VICTORY) {
+      const wasHighScore = leaderboard.addScore({
+        score,
+        level,
+        maxCombo,
+        characterId: selectedCharacter
+      });
+      setIsNewHighScore(wasHighScore);
+    }
+  }, [status, score, level, maxCombo, selectedCharacter]);
 
   if (status === GameStatus.SHOP) {
       return <ShopScreen />;
@@ -161,13 +180,23 @@ export const HUD: React.FC = () => {
                             🌟 Collect letters to spell SPARKLE! 🌟
                         </div>
 
-                        {/* Character Selection Button */}
-                        <button
-                          onClick={() => setShowCharacterSelector(true)}
-                          className="w-full mb-3 px-6 py-3 bg-gradient-to-r from-purple-400 to-pink-400 text-white font-bold text-lg rounded-full hover:scale-105 transition-all shadow-lg"
-                        >
-                            👤 Choose Your Runner!
-                        </button>
+                        <div className="grid grid-cols-2 gap-3 w-full mb-3">
+                          {/* Leaderboard Button */}
+                          <button
+                            onClick={() => setShowLeaderboard(true)}
+                            className="px-4 py-3 bg-gradient-to-r from-yellow-400 to-orange-400 text-white font-bold text-sm md:text-base rounded-full hover:scale-105 transition-all shadow-lg"
+                          >
+                              🏆 Top Scores
+                          </button>
+
+                          {/* Character Selection Button */}
+                          <button
+                            onClick={() => setShowCharacterSelector(true)}
+                            className="px-4 py-3 bg-gradient-to-r from-purple-400 to-pink-400 text-white font-bold text-sm md:text-base rounded-full hover:scale-105 transition-all shadow-lg"
+                          >
+                              👤 Characters
+                          </button>
+                        </div>
 
                         <button
                           onClick={() => { audio.init(); startGame(); }}
@@ -190,6 +219,11 @@ export const HUD: React.FC = () => {
               {showCharacterSelector && (
                 <CharacterSelector onClose={() => setShowCharacterSelector(false)} />
               )}
+
+              {/* Leaderboard Modal */}
+              {showLeaderboard && (
+                <LeaderboardView onClose={() => setShowLeaderboard(false)} />
+              )}
           </div>
       );
   }
@@ -198,6 +232,13 @@ export const HUD: React.FC = () => {
       return (
           <div className="absolute inset-0 bg-gradient-to-b from-purple-300 to-pink-200 z-[100] text-purple-900 pointer-events-auto backdrop-blur-sm overflow-y-auto">
               <div className="flex flex-col items-center justify-center min-h-full py-8 px-4">
+                {/* New High Score Banner */}
+                {isNewHighScore && (
+                  <div className="mb-4 px-6 py-3 bg-gradient-to-r from-yellow-400 to-orange-400 text-white font-black text-xl md:text-2xl rounded-full animate-bounce shadow-2xl">
+                    🏆 NEW HIGH SCORE! 🏆
+                  </div>
+                )}
+
                 <h1 className="text-4xl md:text-6xl font-black text-pink-600 mb-6 drop-shadow-lg text-center">💔 Oh No! 💔</h1>
                 
                 <div className="grid grid-cols-1 gap-3 md:gap-4 text-center mb-8 w-full max-w-md">
@@ -223,13 +264,27 @@ export const HUD: React.FC = () => {
                     💪 Don't give up! Try again! 💪
                 </div>
 
-                <button
-                  onClick={() => { audio.init(); restartGame(); }}
-                  className="px-8 md:px-10 py-3 md:py-4 bg-gradient-to-r from-pink-400 to-purple-400 text-white font-bold text-lg md:text-xl rounded-full hover:scale-105 transition-all shadow-xl"
-                >
-                    🌟 Try Again!
-                </button>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full max-w-md">
+                  <button
+                    onClick={() => setShowShareScore(true)}
+                    className="px-6 py-3 bg-gradient-to-r from-blue-400 to-cyan-400 text-white font-bold text-lg rounded-full hover:scale-105 transition-all shadow-xl"
+                  >
+                      📸 Share Score!
+                  </button>
+
+                  <button
+                    onClick={() => { audio.init(); restartGame(); }}
+                    className="px-6 py-3 bg-gradient-to-r from-pink-400 to-purple-400 text-white font-bold text-lg rounded-full hover:scale-105 transition-all shadow-xl"
+                  >
+                      🌟 Try Again!
+                  </button>
+                </div>
               </div>
+
+              {/* Share Score Modal */}
+              {showShareScore && (
+                <ShareScore onClose={() => setShowShareScore(false)} />
+              )}
           </div>
       );
   }
@@ -267,13 +322,27 @@ export const HUD: React.FC = () => {
                     🎊 Amazing job, superstar! 🎊
                 </div>
 
-                <button
-                  onClick={() => { audio.init(); restartGame(); }}
-                  className="px-8 md:px-12 py-4 md:py-5 bg-gradient-to-r from-pink-400 to-purple-400 text-white font-black text-lg md:text-xl rounded-full hover:scale-105 transition-all shadow-2xl"
-                >
-                    ✨ Play Again! ✨
-                </button>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full max-w-md">
+                  <button
+                    onClick={() => setShowShareScore(true)}
+                    className="px-6 py-3 bg-gradient-to-r from-blue-400 to-cyan-400 text-white font-bold text-lg rounded-full hover:scale-105 transition-all shadow-xl"
+                  >
+                      📸 Share Victory!
+                  </button>
+
+                  <button
+                    onClick={() => { audio.init(); restartGame(); }}
+                    className="px-8 md:px-12 py-4 md:py-5 bg-gradient-to-r from-pink-400 to-purple-400 text-white font-black text-lg md:text-xl rounded-full hover:scale-105 transition-all shadow-2xl"
+                  >
+                      ✨ Play Again! ✨
+                  </button>
+                </div>
             </div>
+
+            {/* Share Score Modal */}
+            {showShareScore && (
+              <ShareScore onClose={() => setShowShareScore(false)} />
+            )}
         </div>
     );
   }
