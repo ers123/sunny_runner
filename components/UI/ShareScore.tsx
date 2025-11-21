@@ -43,14 +43,14 @@ export const ShareScore: React.FC<{ onClose: () => void }> = ({ onClose }) => {
       ctx.fill();
     }
 
-    // Title
-    ctx.font = 'bold 80px "Bubblegum Sans", cursive';
+    // Title - Use system fonts for reliability
+    ctx.font = 'bold 70px Arial, sans-serif';
     ctx.fillStyle = '#FFFFFF';
     ctx.strokeStyle = '#FF69B4';
     ctx.lineWidth = 8;
     ctx.textAlign = 'center';
-    ctx.strokeText('✨ RAINBOW SPARKLE RUNNER ✨', canvas.width / 2, 100);
-    ctx.fillText('✨ RAINBOW SPARKLE RUNNER ✨', canvas.width / 2, 100);
+    ctx.strokeText('RAINBOW SPARKLE RUNNER', canvas.width / 2, 100);
+    ctx.fillText('RAINBOW SPARKLE RUNNER', canvas.width / 2, 100);
 
     // Character badge
     const badgeX = canvas.width / 2;
@@ -72,7 +72,7 @@ export const ShareScore: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     ctx.fill();
 
     // Character name
-    ctx.font = 'bold 40px "Quicksand", sans-serif';
+    ctx.font = 'bold 36px Arial, sans-serif';
     ctx.fillStyle = '#FFFFFF';
     ctx.strokeStyle = character.primaryColor;
     ctx.lineWidth = 4;
@@ -83,7 +83,7 @@ export const ShareScore: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     const statsY = 350;
 
     // Score (biggest)
-    ctx.font = 'bold 90px "Quicksand", sans-serif';
+    ctx.font = 'bold 80px Arial, sans-serif';
     ctx.fillStyle = '#FFD700';
     ctx.strokeStyle = '#FF6B9D';
     ctx.lineWidth = 6;
@@ -91,7 +91,7 @@ export const ShareScore: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     ctx.fillText(`${score.toLocaleString()} POINTS`, canvas.width / 2, statsY);
 
     // Level and Combo
-    ctx.font = 'bold 50px "Quicksand", sans-serif';
+    ctx.font = 'bold 45px Arial, sans-serif';
     ctx.fillStyle = '#FFFFFF';
     ctx.strokeStyle = '#9370DB';
     ctx.lineWidth = 4;
@@ -106,18 +106,20 @@ export const ShareScore: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     ctx.fillText(`${maxCombo}x Max Combo`, rightX, statsY + 80);
 
     // Gems collected
-    ctx.font = 'bold 40px "Quicksand", sans-serif';
+    ctx.font = 'bold 35px Arial, sans-serif';
     ctx.fillStyle = '#FFE4E1';
-    ctx.strokeText(`💎 ${gemsCollected} Gems Collected`, canvas.width / 2, statsY + 140);
-    ctx.fillText(`💎 ${gemsCollected} Gems Collected`, canvas.width / 2, statsY + 140);
+    ctx.strokeStyle = '#9370DB';
+    ctx.lineWidth = 3;
+    ctx.strokeText(`${gemsCollected} Gems Collected`, canvas.width / 2, statsY + 140);
+    ctx.fillText(`${gemsCollected} Gems Collected`, canvas.width / 2, statsY + 140);
 
     // Call to action
-    ctx.font = 'bold 35px "Quicksand", sans-serif';
+    ctx.font = 'bold 30px Arial, sans-serif';
     ctx.fillStyle = '#FFFFFF';
     ctx.strokeStyle = '#FF69B4';
     ctx.lineWidth = 3;
-    ctx.strokeText('Play now at sparklerunner.vercel.app', canvas.width / 2, canvas.height - 50);
-    ctx.fillText('Play now at sparklerunner.vercel.app', canvas.width / 2, canvas.height - 50);
+    ctx.strokeText('sparklerunner.vercel.app', canvas.width / 2, canvas.height - 50);
+    ctx.fillText('sparklerunner.vercel.app', canvas.width / 2, canvas.height - 50);
   };
 
   const downloadImage = () => {
