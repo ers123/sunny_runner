@@ -10,6 +10,7 @@ import { useStore } from '../../store';
 import { GameStatus, SPARKLE_COLORS, ShopItem, RUN_SPEED_BASE } from '../../types';
 import { audio } from '../System/Audio';
 import { FloatingTextDisplay } from './FloatingText';
+import { AchievementPopup } from './AchievementPopup';
 
 // Available Shop Items
 const SHOP_ITEMS: ShopItem[] = [
@@ -337,6 +338,9 @@ export const HUD: React.FC = () => {
 
         {/* Floating score text overlay */}
         <FloatingTextDisplay />
+
+        {/* Achievement notifications */}
+        <AchievementPopup />
     </div>
   );
 };
