@@ -12,9 +12,10 @@ interface ParticleTrailProps {
   position: THREE.Vector3;
   isJumping: boolean;
   isImmortalityActive: boolean;
+  trailColor?: string; // Custom trail color from character
 }
 
-export const ParticleTrail: React.FC<ParticleTrailProps> = ({ position, isJumping, isImmortalityActive }) => {
+export const ParticleTrail: React.FC<ParticleTrailProps> = ({ position, isJumping, isImmortalityActive, trailColor = '#FF69B4' }) => {
   const particlesRef = useRef<THREE.Points>(null);
   const speed = useStore(state => state.speed);
 
@@ -68,8 +69,8 @@ export const ParticleTrail: React.FC<ParticleTrailProps> = ({ position, isJumpin
     particlesRef.current.geometry.attributes.position.needsUpdate = true;
   });
 
-  // Color based on state
-  const particleColor = isImmortalityActive ? '#FFD700' : '#FF69B4';
+  // Color based on state - use character's trail color when not immortal
+  const particleColor = isImmortalityActive ? '#FFD700' : trailColor;
 
   return (
     <points ref={particlesRef}>

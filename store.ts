@@ -29,6 +29,10 @@ interface GameState {
   maxCombo: number;
   streak: number; // Letters collected in a row
 
+  // Character System
+  selectedCharacter: string;
+  unlockedCharacters: string[];
+
   // Actions
   startGame: () => void;
   restartGame: () => void;
@@ -46,10 +50,14 @@ interface GameState {
   openShop: () => void;
   closeShop: () => void;
   activateImmortality: () => void;
+
+  // Character Actions
+  selectCharacter: (characterId: string) => void;
+  checkUnlocks: () => void;
 }
 
 const SPARKLE_TARGET = ['S', 'P', 'A', 'R', 'K', 'L', 'E'];
-const MAX_LEVEL = 3;
+const MAX_LEVEL = 10;
 
 export const useStore = create<GameState>((set, get) => ({
   status: GameStatus.MENU,
@@ -71,6 +79,10 @@ export const useStore = create<GameState>((set, get) => ({
   combo: 0,
   maxCombo: 0,
   streak: 0,
+
+  // Character system
+  selectedCharacter: 'sparkle', // Default character
+  unlockedCharacters: ['sparkle'], // Start with sparkle unlocked
 
   startGame: () => set({
     status: GameStatus.PLAYING,
@@ -242,4 +254,42 @@ export const useStore = create<GameState>((set, get) => ({
 
   setStatus: (status) => set({ status }),
   increaseLevel: () => set((state) => ({ level: state.level + 1 })),
+
+  // Character functions
+  selectCharacter: (characterId: string) => {
+      const { unlockedCharacters } = get();
+      if (unlockedCharacters.includes(characterId)) {
+          set({ selectedCharacter: characterId });
+      }
+  },
+
+  checkUnlocks: () => {
+      const { level, gemsCollected, maxCombo, unlockedCharacters } = get();
+      const newUnlocks = [...unlockedCharacters];
+
+      // Galaxy: Reach Level 3
+      if (level >= 3 && !newUnlocks.includes('galaxy')) {
+          newUnlocks.push('galaxy');
+      }
+
+      // Rainbow: Collect 500 Gems
+      if (gemsCollected >= 500 && !newUnlocks.includes('rainbow')) {
+          newUnlocks.push('rainbow');
+      }
+
+      // Golden: Get 20x Combo
+      if (maxCombo >= 20 && !newUnlocks.includes('golden')) {
+          newUnlocks.push('golden');
+      }
+
+      // Mystic: Complete Level 10
+      if (level >= 10 && !newUnlocks.includes('mystic')) {
+          newUnlocks.push('mystic');
+      }
+
+      // Update if changed
+      if (newUnlocks.length !== unlockedCharacters.length) {
+          set({ unlockedCharacters: newUnlocks });
+      }
+  },
 }));

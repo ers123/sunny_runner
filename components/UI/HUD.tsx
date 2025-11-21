@@ -9,6 +9,7 @@ import { Heart, Zap, Trophy, MapPin, Diamond, Rocket, ArrowUpCircle, Shield, Act
 import { useStore } from '../../store';
 import { GameStatus, SPARKLE_COLORS, ShopItem, RUN_SPEED_BASE } from '../../types';
 import { audio } from '../System/Audio';
+import { bgm } from '../System/BGM';
 import { FloatingTextDisplay } from './FloatingText';
 import { AchievementPopup } from './AchievementPopup';
 
@@ -112,6 +113,15 @@ export const HUD: React.FC = () => {
 
   // Common container style
   const containerClass = "absolute inset-0 pointer-events-none flex flex-col justify-between p-4 md:p-8 z-50";
+
+  // BGM Control - Start music when playing, stop when game over
+  useEffect(() => {
+    if (status === GameStatus.PLAYING) {
+      bgm.start(); // Randomly selects a track
+    } else if (status === GameStatus.GAME_OVER || status === GameStatus.MENU) {
+      bgm.stop();
+    }
+  }, [status]);
 
   if (status === GameStatus.SHOP) {
       return <ShopScreen />;
