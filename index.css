@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: linear-gradient(to bottom, #FFB6C1, #DDA0DD, #87CEEB);
+  font-family: 'Quicksand', sans-serif;
+  touch-action: none; /* Prevent pull-to-refresh on mobile */
+}
+
+.font-bubbly {
+  font-family: 'Bubblegum Sans', cursive;
+}
