@@ -10,6 +10,7 @@ import * as THREE from 'three';
 import { useStore } from '../../store';
 import { LANE_WIDTH, GameStatus } from '../../types';
 import { audio } from '../System/Audio';
+import { ParticleTrail } from './ParticleTrail';
 
 // Physics Constants
 const GRAVITY = 50;
@@ -325,8 +326,15 @@ export const Player: React.FC = () => {
             </group>
         </group>
       </group>
-      
+
       <mesh ref={shadowRef} position={[0, 0.02, 0]} rotation={[-Math.PI/2, 0, 0]} geometry={SHADOW_GEO} material={shadowMaterial} />
+
+      {/* Sparkle particle trail */}
+      <ParticleTrail
+        position={groupRef.current?.position || new THREE.Vector3(0, 0, 0)}
+        isJumping={isJumping.current}
+        isImmortalityActive={isImmortalityActive}
+      />
     </group>
   );
 };
