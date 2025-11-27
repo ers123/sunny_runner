@@ -174,7 +174,7 @@ export const HUD: React.FC = () => {
 
   if (status === GameStatus.GAME_OVER) {
       return (
-          <div className="fixed inset-0 bg-gradient-to-b from-purple-300 to-pink-200 z-[100] text-purple-900 pointer-events-auto overflow-y-auto flex items-center justify-center p-4">
+          <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-purple-300 to-pink-200 z-[100] text-purple-900 pointer-events-auto overflow-y-auto flex items-center justify-center p-4">
               <div className="flex flex-col items-center justify-center w-full max-w-md py-8">
                 {/* New High Score Banner */}
                 {isNewHighScore && (
@@ -242,7 +242,7 @@ export const HUD: React.FC = () => {
 
   if (status === GameStatus.VICTORY) {
     return (
-        <div className="fixed inset-0 bg-gradient-to-b from-yellow-200 via-pink-200 to-purple-200 z-[100] text-purple-900 pointer-events-auto overflow-y-auto flex items-center justify-center p-4">
+        <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-yellow-200 via-pink-200 to-purple-200 z-[100] text-purple-900 pointer-events-auto overflow-y-auto flex items-center justify-center p-4">
             <div className="flex flex-col items-center justify-center w-full max-w-md py-8">
                 {/* Daily Challenge Completed Banner */}
                 {challengeCompleted && (

@@ -20,7 +20,7 @@ export const MainMenu: React.FC = () => {
   const currentCharacter = CHARACTERS[selectedCharacter];
 
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-pink-300 via-purple-300 to-blue-300 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-pink-300 via-purple-300 to-blue-300 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
       {/* Animated Background Sparkles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(20)].map((_, i) => (

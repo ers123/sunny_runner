@@ -76,20 +76,14 @@ function App() {
   const status = useStore((state) => state.status);
 
   return (
-    <div className="relative w-full h-screen bg-gradient-to-b from-pink-200 via-purple-200 to-blue-200 overflow-hidden select-none">
-      {/* Show Main Menu when status is MENU */}
-      {status === GameStatus.MENU && <MainMenu />}
-
-      {/* Show Game Scene when playing */}
+    <div className="relative w-screen h-screen bg-gradient-to-b from-pink-200 via-purple-200 to-blue-200 overflow-hidden select-none">
+      {/* 3D Canvas - Background Layer */}
       {status !== GameStatus.MENU && (
-        <>
-          <HUD />
-          <AchievementTrigger />
+        <div className="absolute inset-0 w-full h-full">
           <Canvas
             shadows
             dpr={[1, 1.5]}
             gl={{ antialias: false, stencil: false, depth: true, powerPreference: "high-performance" }}
-            // Initial camera, matches the controller base
             camera={{ position: [0, 5.5, 8], fov: 60 }}
           >
             <CameraController />
@@ -97,7 +91,22 @@ function App() {
                 <Scene />
             </Suspense>
           </Canvas>
-        </>
+        </div>
+      )}
+
+      {/* HUD Overlay - Over Canvas */}
+      {status !== GameStatus.MENU && (
+        <div className="absolute inset-0 w-full h-full pointer-events-none">
+          <HUD />
+          <AchievementTrigger />
+        </div>
+      )}
+
+      {/* Main Menu - Full Screen Overlay */}
+      {status === GameStatus.MENU && (
+        <div className="absolute inset-0 w-full h-full">
+          <MainMenu />
+        </div>
       )}
     </div>
   );
