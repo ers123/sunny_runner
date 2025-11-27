@@ -174,60 +174,60 @@ export const HUD: React.FC = () => {
 
   if (status === GameStatus.GAME_OVER) {
       return (
-          <div className="absolute inset-0 bg-gradient-to-b from-purple-300 to-pink-200 z-[100] text-purple-900 pointer-events-auto backdrop-blur-sm overflow-y-auto">
-              <div className="flex flex-col items-center justify-center min-h-full py-8 px-4">
+          <div className="fixed inset-0 bg-gradient-to-b from-purple-300 to-pink-200 z-[100] text-purple-900 pointer-events-auto overflow-y-auto flex items-center justify-center p-4">
+              <div className="flex flex-col items-center justify-center w-full max-w-md py-8">
                 {/* New High Score Banner */}
                 {isNewHighScore && (
-                  <div className="mb-4 px-6 py-3 bg-gradient-to-r from-yellow-400 to-orange-400 text-white font-black text-xl md:text-2xl rounded-full animate-bounce shadow-2xl">
+                  <div className="mb-4 px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-yellow-400 to-orange-400 text-white font-black text-lg sm:text-xl md:text-2xl rounded-full animate-bounce shadow-2xl">
                     🏆 NEW HIGH SCORE! 🏆
                   </div>
                 )}
 
                 {/* Daily Challenge Completed Banner */}
                 {challengeCompleted && (
-                  <div className="mb-4 px-6 py-3 bg-gradient-to-r from-red-400 to-orange-500 text-white font-black text-lg md:text-xl rounded-full animate-bounce shadow-2xl">
-                    🔥 DAILY CHALLENGE COMPLETED! +500 GEMS! 🔥
+                  <div className="mb-4 px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-red-400 to-orange-500 text-white font-black text-sm sm:text-lg md:text-xl rounded-full animate-bounce shadow-2xl">
+                    🔥 DAILY CHALLENGE! 🔥
                   </div>
                 )}
 
-                <h1 className="text-4xl md:text-6xl font-black text-pink-600 mb-6 drop-shadow-lg text-center">💔 Oh No! 💔</h1>
-                
-                <div className="grid grid-cols-1 gap-3 md:gap-4 text-center mb-8 w-full max-w-md">
-                    <div className="bg-white/80 p-3 md:p-4 rounded-2xl border-2 border-purple-300 flex items-center justify-between">
-                        <div className="flex items-center text-purple-600 text-sm md:text-base"><Trophy className="mr-2 w-4 h-4 md:w-5 md:h-5"/> Level</div>
-                        <div className="text-xl md:text-2xl font-bold">{level} / 10</div>
+                <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-pink-600 mb-6 drop-shadow-lg text-center">💔 Oh No! 💔</h1>
+
+                <div className="space-y-2 sm:space-y-3 mb-8 w-full">
+                    <div className="bg-white/80 p-3 sm:p-4 rounded-2xl border-2 border-purple-300 flex items-center justify-between">
+                        <div className="flex items-center text-purple-600 text-xs sm:text-sm"><Trophy className="mr-2 w-4 h-4 sm:w-5 sm:h-5"/> Level</div>
+                        <div className="text-lg sm:text-xl md:text-2xl font-bold">{level} / 10</div>
                     </div>
-                    <div className="bg-white/80 p-3 md:p-4 rounded-2xl border-2 border-purple-300 flex items-center justify-between">
-                        <div className="flex items-center text-pink-600 text-sm md:text-base"><Diamond className="mr-2 w-4 h-4 md:w-5 md:h-5"/> Stars Collected</div>
-                        <div className="text-xl md:text-2xl font-bold">{gemsCollected}</div>
+                    <div className="bg-white/80 p-3 sm:p-4 rounded-2xl border-2 border-purple-300 flex items-center justify-between">
+                        <div className="flex items-center text-pink-600 text-xs sm:text-sm"><Diamond className="mr-2 w-4 h-4 sm:w-5 sm:h-5"/> Stars</div>
+                        <div className="text-lg sm:text-xl md:text-2xl font-bold">{gemsCollected}</div>
                     </div>
-                    <div className="bg-white/80 p-3 md:p-4 rounded-2xl border-2 border-purple-300 flex items-center justify-between">
-                        <div className="flex items-center text-blue-600 text-sm md:text-base"><MapPin className="mr-2 w-4 h-4 md:w-5 md:h-5"/> Distance</div>
-                        <div className="text-xl md:text-2xl font-bold">{Math.floor(distance)}m</div>
+                    <div className="bg-white/80 p-3 sm:p-4 rounded-2xl border-2 border-purple-300 flex items-center justify-between">
+                        <div className="flex items-center text-blue-600 text-xs sm:text-sm"><MapPin className="mr-2 w-4 h-4 sm:w-5 sm:h-5"/> Distance</div>
+                        <div className="text-lg sm:text-xl md:text-2xl font-bold">{Math.floor(distance)}m</div>
                     </div>
-                     <div className="bg-gradient-to-r from-pink-200 to-purple-200 p-3 md:p-4 rounded-2xl flex items-center justify-between mt-2 border-2 border-pink-400">
-                        <div className="flex items-center text-purple-700 text-sm md:text-base font-bold">✨ Total Sparkles</div>
-                        <div className="text-2xl md:text-3xl font-bold text-pink-600">{score.toLocaleString()}</div>
+                     <div className="bg-gradient-to-r from-pink-200 to-purple-200 p-3 sm:p-4 rounded-2xl flex items-center justify-between border-2 border-pink-400">
+                        <div className="flex items-center text-purple-700 text-xs sm:text-sm font-bold">✨ Sparkles</div>
+                        <div className="text-lg sm:text-xl md:text-3xl font-bold text-pink-600">{score.toLocaleString()}</div>
                     </div>
                 </div>
 
-                <div className="text-center mb-6 text-purple-700 font-semibold">
+                <div className="text-center mb-6 text-purple-700 font-semibold text-sm sm:text-base">
                     💪 Don't give up! Try again! 💪
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full max-w-md">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
                   <button
                     onClick={() => setShowShareScore(true)}
-                    className="px-6 py-3 bg-gradient-to-r from-blue-400 to-cyan-400 text-white font-bold text-lg rounded-full hover:scale-105 transition-all shadow-xl"
+                    className="px-4 sm:px-6 py-3 bg-gradient-to-r from-blue-400 to-cyan-400 text-white font-bold text-sm sm:text-lg rounded-full hover:scale-105 transition-all shadow-xl"
                   >
-                      📸 Share Score!
+                      📸 Share
                   </button>
 
                   <button
                     onClick={() => { audio.init(); restartGame(); }}
-                    className="px-6 py-3 bg-gradient-to-r from-pink-400 to-purple-400 text-white font-bold text-lg rounded-full hover:scale-105 transition-all shadow-xl"
+                    className="px-4 sm:px-6 py-3 bg-gradient-to-r from-pink-400 to-purple-400 text-white font-bold text-sm sm:text-lg rounded-full hover:scale-105 transition-all shadow-xl"
                   >
-                      🌟 Try Again!
+                      🌟 Retry
                   </button>
                 </div>
               </div>
@@ -242,57 +242,57 @@ export const HUD: React.FC = () => {
 
   if (status === GameStatus.VICTORY) {
     return (
-        <div className="absolute inset-0 bg-gradient-to-b from-yellow-200 via-pink-200 to-purple-200 z-[100] text-purple-900 pointer-events-auto backdrop-blur-md overflow-y-auto">
-            <div className="flex flex-col items-center justify-center min-h-full py-8 px-4">
+        <div className="fixed inset-0 bg-gradient-to-b from-yellow-200 via-pink-200 to-purple-200 z-[100] text-purple-900 pointer-events-auto overflow-y-auto flex items-center justify-center p-4">
+            <div className="flex flex-col items-center justify-center w-full max-w-md py-8">
                 {/* Daily Challenge Completed Banner */}
                 {challengeCompleted && (
-                  <div className="mb-4 px-6 py-3 bg-gradient-to-r from-red-400 to-orange-500 text-white font-black text-lg md:text-xl rounded-full animate-bounce shadow-2xl">
-                    🔥 DAILY CHALLENGE COMPLETED! +500 GEMS! 🔥
+                  <div className="mb-4 px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-red-400 to-orange-500 text-white font-black text-sm sm:text-lg md:text-xl rounded-full animate-bounce shadow-2xl">
+                    🔥 DAILY CHALLENGE! 🔥
                   </div>
                 )}
 
-                <div className="text-6xl md:text-8xl mb-4 animate-bounce">🎉</div>
-                <h1 className="text-4xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 mb-2 drop-shadow-lg text-center leading-tight">
+                <div className="text-5xl sm:text-6xl md:text-8xl mb-4 animate-bounce">🎉</div>
+                <h1 className="text-3xl sm:text-4xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 mb-2 drop-shadow-lg text-center leading-tight">
                     YOU DID IT!
                 </h1>
-                <p className="text-pink-600 text-lg md:text-2xl font-bold mb-8 text-center">
-                    ✨ You collected all the SPARKLE letters! ✨
+                <p className="text-pink-600 text-sm sm:text-lg md:text-2xl font-bold mb-8 text-center">
+                    ✨ All SPARKLE letters! ✨
                 </p>
-                
-                <div className="grid grid-cols-1 gap-4 text-center mb-8 w-full max-w-md">
-                    <div className="bg-white/80 p-6 rounded-3xl border-4 border-pink-300 shadow-xl">
-                        <div className="text-xs md:text-sm text-purple-600 mb-1 tracking-wider font-bold">🌟 FINAL SPARKLES 🌟</div>
-                        <div className="text-3xl md:text-4xl font-bold text-pink-600">{score.toLocaleString()}</div>
+
+                <div className="space-y-4 mb-8 w-full">
+                    <div className="bg-white/80 p-4 sm:p-6 rounded-3xl border-4 border-pink-300 shadow-xl">
+                        <div className="text-xs sm:text-sm text-purple-600 mb-1 tracking-wider font-bold">🌟 FINAL SPARKLES 🌟</div>
+                        <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-pink-600">{score.toLocaleString()}</div>
                     </div>
-                     <div className="grid grid-cols-2 gap-4">
-                        <div className="bg-white/80 p-4 rounded-2xl border-2 border-pink-300">
+                     <div className="grid grid-cols-2 gap-3">
+                        <div className="bg-white/80 p-3 sm:p-4 rounded-2xl border-2 border-pink-300">
                             <div className="text-xs text-purple-600 font-semibold">⭐ Stars</div>
-                            <div className="text-xl md:text-2xl font-bold text-pink-600">{gemsCollected}</div>
+                            <div className="text-lg sm:text-xl md:text-2xl font-bold text-pink-600">{gemsCollected}</div>
                         </div>
-                        <div className="bg-white/80 p-4 rounded-2xl border-2 border-purple-300">
-                             <div className="text-xs text-purple-600 font-semibold">🏃‍♀️ Distance</div>
-                            <div className="text-xl md:text-2xl font-bold text-purple-600">{Math.floor(distance)}m</div>
+                        <div className="bg-white/80 p-3 sm:p-4 rounded-2xl border-2 border-purple-300">
+                             <div className="text-xs text-purple-600 font-semibold">📏 Distance</div>
+                            <div className="text-lg sm:text-xl md:text-2xl font-bold text-purple-600">{Math.floor(distance)}m</div>
                         </div>
                      </div>
                 </div>
 
-                <div className="text-center mb-6 text-purple-700 text-lg font-bold">
+                <div className="text-center mb-6 text-purple-700 text-sm sm:text-base md:text-lg font-bold">
                     🎊 Amazing job, superstar! 🎊
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full max-w-md">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
                   <button
                     onClick={() => setShowShareScore(true)}
-                    className="px-6 py-3 bg-gradient-to-r from-blue-400 to-cyan-400 text-white font-bold text-lg rounded-full hover:scale-105 transition-all shadow-xl"
+                    className="px-4 sm:px-6 py-3 bg-gradient-to-r from-blue-400 to-cyan-400 text-white font-bold text-sm sm:text-lg rounded-full hover:scale-105 transition-all shadow-xl"
                   >
-                      📸 Share Victory!
+                      📸 Share
                   </button>
 
                   <button
                     onClick={() => { audio.init(); restartGame(); }}
-                    className="px-8 md:px-12 py-4 md:py-5 bg-gradient-to-r from-pink-400 to-purple-400 text-white font-black text-lg md:text-xl rounded-full hover:scale-105 transition-all shadow-2xl"
+                    className="px-4 sm:px-6 py-3 bg-gradient-to-r from-pink-400 to-purple-400 text-white font-bold text-sm sm:text-lg rounded-full hover:scale-105 transition-all shadow-2xl"
                   >
-                      ✨ Play Again! ✨
+                      ✨ Again! ✨
                   </button>
                 </div>
             </div>
