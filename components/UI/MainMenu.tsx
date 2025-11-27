@@ -20,7 +20,7 @@ export const MainMenu: React.FC = () => {
   const currentCharacter = CHARACTERS[selectedCharacter];
 
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-pink-300 via-purple-300 to-blue-300 flex items-center justify-center p-4 overflow-hidden">
+    <div className="fixed inset-0 bg-gradient-to-br from-pink-300 via-purple-300 to-blue-300 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
       {/* Animated Background Sparkles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(20)].map((_, i) => (
@@ -40,97 +40,97 @@ export const MainMenu: React.FC = () => {
       </div>
 
       {/* Main Menu Card */}
-      <div className="relative z-10 bg-white/90 backdrop-blur-sm rounded-3xl p-8 md:p-12 max-w-2xl w-full shadow-2xl border-4 border-white">
+      <div className="relative z-10 bg-white/95 backdrop-blur-sm rounded-3xl p-6 sm:p-8 lg:p-12 w-full max-w-md sm:max-w-lg lg:max-w-2xl shadow-2xl border-4 border-white my-auto">
         {/* Title */}
-        <div className="text-center mb-8">
-          <h1 className="font-black text-5xl md:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 mb-4 animate-pulse">
+        <div className="text-center mb-6 sm:mb-8">
+          <h1 className="font-black text-4xl sm:text-5xl lg:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 mb-2 sm:mb-4 animate-pulse leading-tight">
             ✨ RAINBOW
           </h1>
-          <h1 className="font-black text-5xl md:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 mb-6">
+          <h1 className="font-black text-4xl sm:text-5xl lg:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 mb-4 sm:mb-6 leading-tight">
             SPARKLE RUNNER ✨
           </h1>
-          <p className="text-gray-700 text-lg font-semibold">
+          <p className="text-gray-700 text-base sm:text-lg font-semibold">
             Collect the letters, dodge obstacles, and reach Level 10!
           </p>
         </div>
 
         {/* Current Character Display */}
-        <div className="mb-8 p-4 bg-gradient-to-r from-pink-100 to-purple-100 rounded-2xl border-3 border-purple-300">
+        <div className="mb-6 sm:mb-8 p-4 bg-gradient-to-r from-pink-100 to-purple-100 rounded-2xl border-3 border-purple-300">
           <div className="flex items-center justify-center space-x-3">
             <div
-              className="w-12 h-12 rounded-full border-3 border-white shadow-lg"
+              className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border-3 border-white shadow-lg flex-shrink-0"
               style={{
                 background: `linear-gradient(135deg, ${currentCharacter.primaryColor}, ${currentCharacter.secondaryColor})`,
               }}
             />
-            <div className="text-left">
-              <p className="text-sm text-gray-600 font-semibold">Playing as:</p>
-              <p className="font-black text-lg">{currentCharacter.name}</p>
+            <div className="text-left flex-1 min-w-0">
+              <p className="text-xs sm:text-sm text-gray-600 font-semibold">Playing as:</p>
+              <p className="font-black text-base sm:text-lg text-gray-900">{currentCharacter.name}</p>
             </div>
           </div>
         </div>
 
         {/* Menu Buttons */}
-        <div className="flex flex-col space-y-4">
+        <div className="flex flex-col space-y-3 sm:space-y-4">
           {/* Start Game Button */}
           <button
             onClick={startGame}
-            className="group relative py-5 px-8 bg-gradient-to-r from-pink-500 to-purple-500 text-white font-black text-2xl rounded-full hover:scale-105 active:scale-95 transition-all shadow-xl hover:shadow-2xl"
+            className="group relative py-4 sm:py-5 px-6 sm:px-8 bg-gradient-to-r from-pink-500 to-purple-500 text-white font-black text-xl sm:text-2xl rounded-full hover:scale-105 active:scale-95 transition-all shadow-xl hover:shadow-2xl w-full"
           >
-            <div className="flex items-center justify-center space-x-3">
-              <Play className="w-8 h-8 fill-white" />
-              <span>START GAME</span>
+            <div className="flex items-center justify-center space-x-2 sm:space-x-3">
+              <Play className="w-6 sm:w-8 h-6 sm:h-8 fill-white flex-shrink-0" />
+              <span className="truncate">START GAME</span>
             </div>
             {/* Glow Effect */}
             <div className="absolute inset-0 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full blur-xl opacity-0 group-hover:opacity-50 transition-opacity -z-10" />
           </button>
 
           {/* Secondary Buttons Grid */}
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-3 gap-2 sm:gap-3">
             {/* Daily Challenge Button */}
             <button
               onClick={() => setShowDailyChallenge(true)}
-              className="py-3 px-4 bg-gradient-to-r from-red-400 to-orange-400 text-white font-bold text-sm rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg hover:shadow-xl"
+              className="py-3 sm:py-4 px-2 sm:px-4 bg-gradient-to-r from-red-400 to-orange-400 text-white font-bold text-xs sm:text-sm rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg hover:shadow-xl"
             >
               <div className="flex flex-col items-center justify-center space-y-1">
-                <Flame className="w-5 h-5" />
-                <span>Challenge</span>
+                <Flame className="w-5 sm:w-6 h-5 sm:h-6" />
+                <span className="text-xs sm:text-sm">Challenge</span>
               </div>
             </button>
 
             {/* Character Select Button */}
             <button
               onClick={() => setShowCharacterSelect(true)}
-              className="py-3 px-4 bg-gradient-to-r from-purple-400 to-pink-400 text-white font-bold text-sm rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg hover:shadow-xl"
+              className="py-3 sm:py-4 px-2 sm:px-4 bg-gradient-to-r from-purple-400 to-pink-400 text-white font-bold text-xs sm:text-sm rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg hover:shadow-xl"
             >
               <div className="flex flex-col items-center justify-center space-y-1">
-                <User className="w-5 h-5" />
-                <span>Character</span>
+                <User className="w-5 sm:w-6 h-5 sm:h-6" />
+                <span className="text-xs sm:text-sm">Character</span>
               </div>
             </button>
 
             {/* Leaderboard Button */}
             <button
               onClick={() => setShowLeaderboard(true)}
-              className="py-3 px-4 bg-gradient-to-r from-yellow-400 to-orange-400 text-white font-bold text-sm rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg hover:shadow-xl"
+              className="py-3 sm:py-4 px-2 sm:px-4 bg-gradient-to-r from-yellow-400 to-orange-400 text-white font-bold text-xs sm:text-sm rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg hover:shadow-xl"
             >
               <div className="flex flex-col items-center justify-center space-y-1">
-                <Trophy className="w-5 h-5" />
-                <span>Leaderboard</span>
+                <Trophy className="w-5 sm:w-6 h-5 sm:h-6" />
+                <span className="text-xs sm:text-sm">Leaderboard</span>
               </div>
             </button>
           </div>
         </div>
 
         {/* How to Play */}
-        <div className="mt-8 p-4 bg-blue-50 rounded-2xl border-2 border-blue-200">
-          <h3 className="font-bold text-blue-800 mb-2 text-center">How to Play</h3>
-          <ul className="text-sm text-blue-700 space-y-1">
-            <li>⬅️ ➡️ <strong>Arrow Keys</strong> or <strong>A/D</strong> - Move left/right</li>
+        <div className="mt-6 sm:mt-8 p-4 bg-blue-50 rounded-2xl border-2 border-blue-200">
+          <h3 className="font-bold text-blue-800 mb-2 text-center text-sm sm:text-base">How to Play</h3>
+          <ul className="text-xs sm:text-sm text-blue-700 space-y-1">
+            <li>⬅️ ➡️ <strong>Arrow Keys</strong> or <strong>A/D</strong> - Move</li>
             <li>⬆️ <strong>Spacebar</strong> or <strong>W</strong> - Jump</li>
-            <li>✨ Collect <strong>S-P-A-R-K-L-E</strong> letters to advance levels</li>
-            <li>💎 Grab gems for points and combo bonuses</li>
-            <li>❤️ Avoid obstacles or lose lives</li>
+            <li>✨ Collect <strong>S-P-A-R-K-L-E</strong> to level up</li>
+            <li>💎 Grab gems for points</li>
+            <li>❤️ Avoid obstacles</li>
           </ul>
         </div>
       </div>
