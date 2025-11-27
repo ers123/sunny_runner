@@ -33,6 +33,9 @@ interface GameState {
   selectedCharacter: string;
   unlockedCharacters: string[];
 
+  // Daily Challenge
+  dailyChallengeCompleted: boolean;
+
   // Actions
   startGame: () => void;
   restartGame: () => void;
@@ -54,6 +57,9 @@ interface GameState {
   // Character Actions
   selectCharacter: (characterId: string) => void;
   checkUnlocks: () => void;
+
+  // Daily Challenge Actions
+  checkDailyChallenge: () => void;
 }
 
 const SPARKLE_TARGET = ['S', 'P', 'A', 'R', 'K', 'L', 'E'];
@@ -83,6 +89,9 @@ export const useStore = create<GameState>((set, get) => ({
   // Character system
   selectedCharacter: 'sparkle', // Default character
   unlockedCharacters: ['sparkle'], // Start with sparkle unlocked
+
+  // Daily challenge
+  dailyChallengeCompleted: false,
 
   startGame: () => set({
     status: GameStatus.PLAYING,
@@ -290,6 +299,27 @@ export const useStore = create<GameState>((set, get) => ({
       // Update if changed
       if (newUnlocks.length !== unlockedCharacters.length) {
           set({ unlockedCharacters: newUnlocks });
+      }
+  },
+
+  // Daily Challenge
+  checkDailyChallenge: () => {
+      const { level, gemsCollected, maxCombo, distance } = get();
+      try {
+          // Dynamically import to avoid circular dependencies
+          const { dailyChallenge } = require('../components/System/DailyChallenge');
+          const completedChallenge = dailyChallenge.checkChallengeCompletion({
+              gemsCollected,
+              level,
+              maxCombo,
+              distance
+          });
+
+          if (completedChallenge) {
+              set({ dailyChallengeCompleted: true });
+          }
+      } catch (error) {
+          console.error('Failed to check daily challenge:', error);
       }
   },
 }));

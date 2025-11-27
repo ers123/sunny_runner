@@ -17,6 +17,8 @@ import { ShareScore } from './ShareScore';
 import { LeaderboardView } from './LeaderboardView';
 import { VolumeControl } from './VolumeControl';
 import { leaderboard } from '../System/Leaderboard';
+import { DailyChallengeUI } from './DailyChallengeUI';
+import { dailyChallenge } from '../System/DailyChallenge';
 
 // Available Shop Items
 const SHOP_ITEMS: ShopItem[] = [
@@ -113,12 +115,14 @@ const ShopScreen: React.FC = () => {
 };
 
 export const HUD: React.FC = () => {
-  const { score, lives, maxLives, collectedLetters, status, level, restartGame, startGame, gemsCollected, distance, isImmortalityActive, speed, combo, maxCombo, streak, checkUnlocks, selectedCharacter } = useStore();
+  const { score, lives, maxLives, collectedLetters, status, level, restartGame, startGame, gemsCollected, distance, isImmortalityActive, speed, combo, maxCombo, streak, checkUnlocks, selectedCharacter, checkDailyChallenge } = useStore();
   const target = ['S', 'P', 'A', 'R', 'K', 'L', 'E'];
   const [showCharacterSelector, setShowCharacterSelector] = useState(false);
   const [showShareScore, setShowShareScore] = useState(false);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [showDailyChallenge, setShowDailyChallenge] = useState(false);
   const [isNewHighScore, setIsNewHighScore] = useState(false);
+  const [challengeCompleted, setChallengeCompleted] = useState(false);
 
   // Common container style
   const containerClass = "absolute inset-0 pointer-events-none flex flex-col justify-between p-4 md:p-8 z-50";
@@ -147,8 +151,22 @@ export const HUD: React.FC = () => {
         characterId: selectedCharacter
       });
       setIsNewHighScore(wasHighScore);
+
+      // Check daily challenge and update streak
+      checkDailyChallenge();
+      const challenge = dailyChallenge.getDailyChallenge();
+      const completed = dailyChallenge.checkChallengeCompletion({
+        gemsCollected,
+        level,
+        maxCombo,
+        distance
+      });
+      setChallengeCompleted(!!completed);
+
+      // Update streak
+      dailyChallenge.updateStreak();
     }
-  }, [status, score, level, maxCombo, selectedCharacter]);
+  }, [status, score, level, maxCombo, selectedCharacter, gemsCollected, distance, checkDailyChallenge]);
 
   if (status === GameStatus.SHOP) {
       return <ShopScreen />;
@@ -181,21 +199,29 @@ export const HUD: React.FC = () => {
                             🌟 Collect letters to spell SPARKLE! 🌟
                         </div>
 
-                        <div className="grid grid-cols-2 gap-3 w-full mb-3">
+                        <div className="grid grid-cols-3 gap-3 w-full mb-3">
+                          {/* Daily Challenge Button */}
+                          <button
+                            onClick={() => setShowDailyChallenge(true)}
+                            className="px-3 py-3 bg-gradient-to-r from-red-400 to-orange-400 text-white font-bold text-xs md:text-sm rounded-full hover:scale-105 transition-all shadow-lg"
+                          >
+                              🔥 Challenge
+                          </button>
+
                           {/* Leaderboard Button */}
                           <button
                             onClick={() => setShowLeaderboard(true)}
-                            className="px-4 py-3 bg-gradient-to-r from-yellow-400 to-orange-400 text-white font-bold text-sm md:text-base rounded-full hover:scale-105 transition-all shadow-lg"
+                            className="px-3 py-3 bg-gradient-to-r from-yellow-400 to-orange-400 text-white font-bold text-xs md:text-sm rounded-full hover:scale-105 transition-all shadow-lg"
                           >
-                              🏆 Top Scores
+                              🏆 Scores
                           </button>
 
                           {/* Character Selection Button */}
                           <button
                             onClick={() => setShowCharacterSelector(true)}
-                            className="px-4 py-3 bg-gradient-to-r from-purple-400 to-pink-400 text-white font-bold text-sm md:text-base rounded-full hover:scale-105 transition-all shadow-lg"
+                            className="px-3 py-3 bg-gradient-to-r from-purple-400 to-pink-400 text-white font-bold text-xs md:text-sm rounded-full hover:scale-105 transition-all shadow-lg"
                           >
-                              👤 Characters
+                              👤 Chars
                           </button>
                         </div>
 
@@ -215,6 +241,11 @@ export const HUD: React.FC = () => {
                      </div>
                 </div>
               </div>
+
+              {/* Daily Challenge Modal */}
+              {showDailyChallenge && (
+                <DailyChallengeUI onClose={() => setShowDailyChallenge(false)} />
+              )}
 
               {/* Character Selector Modal */}
               {showCharacterSelector && (
@@ -240,12 +271,19 @@ export const HUD: React.FC = () => {
                   </div>
                 )}
 
+                {/* Daily Challenge Completed Banner */}
+                {challengeCompleted && (
+                  <div className="mb-4 px-6 py-3 bg-gradient-to-r from-red-400 to-orange-500 text-white font-black text-lg md:text-xl rounded-full animate-bounce shadow-2xl">
+                    🔥 DAILY CHALLENGE COMPLETED! +500 GEMS! 🔥
+                  </div>
+                )}
+
                 <h1 className="text-4xl md:text-6xl font-black text-pink-600 mb-6 drop-shadow-lg text-center">💔 Oh No! 💔</h1>
                 
                 <div className="grid grid-cols-1 gap-3 md:gap-4 text-center mb-8 w-full max-w-md">
                     <div className="bg-white/80 p-3 md:p-4 rounded-2xl border-2 border-purple-300 flex items-center justify-between">
                         <div className="flex items-center text-purple-600 text-sm md:text-base"><Trophy className="mr-2 w-4 h-4 md:w-5 md:h-5"/> Level</div>
-                        <div className="text-xl md:text-2xl font-bold">{level} / 3</div>
+                        <div className="text-xl md:text-2xl font-bold">{level} / 10</div>
                     </div>
                     <div className="bg-white/80 p-3 md:p-4 rounded-2xl border-2 border-purple-300 flex items-center justify-between">
                         <div className="flex items-center text-pink-600 text-sm md:text-base"><Diamond className="mr-2 w-4 h-4 md:w-5 md:h-5"/> Stars Collected</div>
@@ -294,6 +332,13 @@ export const HUD: React.FC = () => {
     return (
         <div className="absolute inset-0 bg-gradient-to-b from-yellow-200 via-pink-200 to-purple-200 z-[100] text-purple-900 pointer-events-auto backdrop-blur-md overflow-y-auto">
             <div className="flex flex-col items-center justify-center min-h-full py-8 px-4">
+                {/* Daily Challenge Completed Banner */}
+                {challengeCompleted && (
+                  <div className="mb-4 px-6 py-3 bg-gradient-to-r from-red-400 to-orange-500 text-white font-black text-lg md:text-xl rounded-full animate-bounce shadow-2xl">
+                    🔥 DAILY CHALLENGE COMPLETED! +500 GEMS! 🔥
+                  </div>
+                )}
+
                 <div className="text-6xl md:text-8xl mb-4 animate-bounce">🎉</div>
                 <h1 className="text-4xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 mb-2 drop-shadow-lg text-center leading-tight">
                     YOU DID IT!
