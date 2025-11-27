@@ -4,16 +4,18 @@
 */
 
 import React, { useState } from 'react';
-import { Play, Sparkles, Trophy, User } from 'lucide-react';
+import { Play, Sparkles, Trophy, User, Flame } from 'lucide-react';
 import { useStore } from '../../store';
 import { CharacterSelector } from './CharacterSelector';
 import { LeaderboardView } from './LeaderboardView';
+import { DailyChallengeUI } from './DailyChallengeUI';
 import { CHARACTERS } from '../../types';
 
 export const MainMenu: React.FC = () => {
   const { startGame, selectedCharacter } = useStore();
   const [showCharacterSelect, setShowCharacterSelect] = useState(false);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [showDailyChallenge, setShowDailyChallenge] = useState(false);
 
   const currentCharacter = CHARACTERS[selectedCharacter];
 
@@ -83,27 +85,41 @@ export const MainMenu: React.FC = () => {
             <div className="absolute inset-0 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full blur-xl opacity-0 group-hover:opacity-50 transition-opacity -z-10" />
           </button>
 
-          {/* Character Select Button */}
-          <button
-            onClick={() => setShowCharacterSelect(true)}
-            className="py-4 px-6 bg-white border-4 border-purple-400 text-purple-700 font-black text-xl rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg hover:bg-purple-50"
-          >
-            <div className="flex items-center justify-center space-x-2">
-              <User className="w-6 h-6" />
-              <span>CHOOSE CHARACTER</span>
-            </div>
-          </button>
+          {/* Secondary Buttons Grid */}
+          <div className="grid grid-cols-3 gap-3">
+            {/* Daily Challenge Button */}
+            <button
+              onClick={() => setShowDailyChallenge(true)}
+              className="py-3 px-4 bg-gradient-to-r from-red-400 to-orange-400 text-white font-bold text-sm rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg hover:shadow-xl"
+            >
+              <div className="flex flex-col items-center justify-center space-y-1">
+                <Flame className="w-5 h-5" />
+                <span>Challenge</span>
+              </div>
+            </button>
 
-          {/* Leaderboard Button */}
-          <button
-            onClick={() => setShowLeaderboard(true)}
-            className="py-4 px-6 bg-white border-4 border-blue-400 text-blue-700 font-black text-xl rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg hover:bg-blue-50"
-          >
-            <div className="flex items-center justify-center space-x-2">
-              <Trophy className="w-6 h-6" />
-              <span>LEADERBOARD</span>
-            </div>
-          </button>
+            {/* Character Select Button */}
+            <button
+              onClick={() => setShowCharacterSelect(true)}
+              className="py-3 px-4 bg-gradient-to-r from-purple-400 to-pink-400 text-white font-bold text-sm rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg hover:shadow-xl"
+            >
+              <div className="flex flex-col items-center justify-center space-y-1">
+                <User className="w-5 h-5" />
+                <span>Character</span>
+              </div>
+            </button>
+
+            {/* Leaderboard Button */}
+            <button
+              onClick={() => setShowLeaderboard(true)}
+              className="py-3 px-4 bg-gradient-to-r from-yellow-400 to-orange-400 text-white font-bold text-sm rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg hover:shadow-xl"
+            >
+              <div className="flex flex-col items-center justify-center space-y-1">
+                <Trophy className="w-5 h-5" />
+                <span>Leaderboard</span>
+              </div>
+            </button>
+          </div>
         </div>
 
         {/* How to Play */}
@@ -118,6 +134,11 @@ export const MainMenu: React.FC = () => {
           </ul>
         </div>
       </div>
+
+      {/* Daily Challenge Modal */}
+      {showDailyChallenge && (
+        <DailyChallengeUI onClose={() => setShowDailyChallenge(false)} />
+      )}
 
       {/* Character Selector Modal */}
       {showCharacterSelect && (
