@@ -125,7 +125,7 @@ export const HUD: React.FC = () => {
   const [challengeCompleted, setChallengeCompleted] = useState(false);
 
   // Common container style
-  const containerClass = "absolute inset-0 pointer-events-none flex flex-col justify-between p-4 md:p-8 z-50";
+  const containerClass = "absolute inset-0 w-full h-full flex flex-col justify-between p-4 md:p-8 z-50";
 
   // BGM Control - Start music when playing, stop when game over
   useEffect(() => {
@@ -307,34 +307,35 @@ export const HUD: React.FC = () => {
 
   return (
     <div className={containerClass}>
-        {/* ===== TOP SECTION ===== */}
-        {/* Left Side: Score & Level */}
-        <div className="flex flex-col gap-2 sm:gap-3">
-            {/* BIG SCORE DISPLAY */}
-            <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-yellow-300 via-pink-300 to-purple-300 rounded-3xl blur-lg opacity-60 animate-pulse"></div>
-                <div className="relative font-bubbly text-4xl sm:text-5xl md:text-7xl font-black text-white drop-shadow-2xl bg-gradient-to-b from-yellow-400 to-orange-400 px-6 sm:px-8 py-3 sm:py-4 rounded-3xl border-4 border-white shadow-2xl transform hover:scale-105 transition-transform">
-                    ✨ {score.toLocaleString()}
+        {/* ===== TOP SECTION - FULL WIDTH WITH LEFT/RIGHT SPLIT ===== */}
+        <div className="flex justify-between items-start gap-3 sm:gap-4 w-full">
+            {/* Left Side: Score & Level */}
+            <div className="flex flex-col gap-2 sm:gap-3">
+                {/* BIG SCORE DISPLAY */}
+                <div className="relative">
+                    <div className="absolute inset-0 bg-gradient-to-r from-yellow-300 via-pink-300 to-purple-300 rounded-3xl blur-lg opacity-60 animate-pulse"></div>
+                    <div className="relative font-bubbly text-4xl sm:text-5xl md:text-7xl font-black text-white drop-shadow-2xl bg-gradient-to-b from-yellow-400 to-orange-400 px-6 sm:px-8 py-3 sm:py-4 rounded-3xl border-4 border-white shadow-2xl transform hover:scale-105 transition-transform">
+                        ✨ {score.toLocaleString()}
+                    </div>
+                </div>
+
+                {/* Level Badge with Progress */}
+                <div className="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 px-4 sm:px-6 py-2 sm:py-3 rounded-full border-4 border-white shadow-xl">
+                    <div className="text-white font-black text-sm sm:text-base md:text-lg text-center">
+                        🌟 Level {level} / 10 🌟
+                    </div>
+                    {/* Progress Bar */}
+                    <div className="w-full bg-white/30 rounded-full h-2 mt-2 overflow-hidden border border-white">
+                        <div
+                            className="bg-gradient-to-r from-yellow-300 to-orange-400 h-full transition-all duration-300"
+                            style={{ width: `${(level / 10) * 100}%` }}
+                        />
+                    </div>
                 </div>
             </div>
 
-            {/* Level Badge with Progress */}
-            <div className="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 px-4 sm:px-6 py-2 sm:py-3 rounded-full border-4 border-white shadow-xl">
-                <div className="text-white font-black text-sm sm:text-base md:text-lg text-center">
-                    🌟 Level {level} / 10 🌟
-                </div>
-                {/* Progress Bar */}
-                <div className="w-full bg-white/30 rounded-full h-2 mt-2 overflow-hidden border border-white">
-                    <div
-                        className="bg-gradient-to-r from-yellow-300 to-orange-400 h-full transition-all duration-300"
-                        style={{ width: `${(level / 10) * 100}%` }}
-                    />
-                </div>
-            </div>
-        </div>
-
-        {/* Right Side: Lives & Gems */}
-        <div className="flex flex-col gap-2 sm:gap-3 items-end">
+            {/* Right Side: Lives & Gems */}
+            <div className="flex flex-col gap-2 sm:gap-3 items-end">
             {/* LIVES - BIG AND COLORFUL */}
             <div className="bg-gradient-to-r from-red-400 to-pink-400 px-4 sm:px-6 py-2 sm:py-3 rounded-3xl border-4 border-white shadow-2xl">
                 <div className="flex items-center gap-2">
@@ -371,6 +372,7 @@ export const HUD: React.FC = () => {
             {/* Volume Control */}
             <div className="bg-white/90 p-2 sm:p-3 rounded-2xl border-3 border-purple-300 shadow-lg">
                 <VolumeControl />
+            </div>
             </div>
         </div>
 
