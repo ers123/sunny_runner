@@ -125,7 +125,7 @@ export const HUD: React.FC = () => {
   const [challengeCompleted, setChallengeCompleted] = useState(false);
 
   // Common container style
-  const containerClass = "absolute inset-0 pointer-events-none flex flex-col justify-between p-4 md:p-8 z-50";
+  const containerClass = "absolute inset-0 w-full h-full flex flex-col justify-between p-4 md:p-8 z-50";
 
   // BGM Control - Start music when playing, stop when game over
   useEffect(() => {
@@ -307,100 +307,168 @@ export const HUD: React.FC = () => {
 
   return (
     <div className={containerClass}>
-        {/* Top Bar */}
-        <div className="flex justify-between items-start w-full gap-2">
-            {/* Score - Left Side */}
-            <div className="flex flex-col gap-1">
-                <div className="font-bubbly text-2xl sm:text-3xl md:text-5xl font-black text-white drop-shadow-lg bg-gradient-to-r from-pink-400 to-purple-400 px-3 sm:px-4 py-2 rounded-2xl border-3 border-white shadow-xl">
-                    ✨ {score.toLocaleString()}
+        {/* ===== TOP SECTION - FULL WIDTH WITH LEFT/RIGHT SPLIT ===== */}
+        <div className="flex justify-between items-start gap-3 sm:gap-4 w-full">
+            {/* Left Side: Score & Level */}
+            <div className="flex flex-col gap-2 sm:gap-3">
+                {/* BIG SCORE DISPLAY */}
+                <div className="relative">
+                    <div className="absolute inset-0 bg-gradient-to-r from-yellow-300 via-pink-300 to-purple-300 rounded-3xl blur-lg opacity-60 animate-pulse"></div>
+                    <div className="relative font-bubbly text-4xl sm:text-5xl md:text-7xl font-black text-white drop-shadow-2xl bg-gradient-to-b from-yellow-400 to-orange-400 px-6 sm:px-8 py-3 sm:py-4 rounded-3xl border-4 border-white shadow-2xl transform hover:scale-105 transition-transform">
+                        ✨ {score.toLocaleString()}
+                    </div>
                 </div>
-                {/* Level Badge - Below Score on Mobile */}
-                <div className="font-bold text-xs sm:text-sm md:text-base text-white bg-gradient-to-r from-purple-500 to-pink-500 px-3 py-1 rounded-full border-2 border-white shadow-lg text-center">
-                    🌟 Level {level} / 10
+
+                {/* Level Badge with Progress */}
+                <div className="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 px-4 sm:px-6 py-2 sm:py-3 rounded-full border-4 border-white shadow-xl">
+                    <div className="text-white font-black text-sm sm:text-base md:text-lg text-center">
+                        🌟 Level {level} / 10 🌟
+                    </div>
+                    {/* Progress Bar */}
+                    <div className="w-full bg-white/30 rounded-full h-2 mt-2 overflow-hidden border border-white">
+                        <div
+                            className="bg-gradient-to-r from-yellow-300 to-orange-400 h-full transition-all duration-300"
+                            style={{ width: `${(level / 10) * 100}%` }}
+                        />
+                    </div>
                 </div>
             </div>
 
-            {/* Lives - Right Side */}
-            <div className="flex flex-col gap-1 items-end">
-                <div className="flex space-x-1 bg-white/90 px-2 sm:px-3 py-2 rounded-2xl border-3 border-pink-300 shadow-xl">
-                    {[...Array(maxLives)].map((_, i) => (
-                        <Heart
-                            key={i}
-                            className={`w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 ${i < lives ? 'text-pink-400 fill-pink-400 drop-shadow-lg animate-pulse' : 'text-gray-300 fill-gray-300'}`}
-                        />
-                    ))}
-                </div>
-                {/* Gems Counter & Volume Control */}
+            {/* Right Side: Lives & Gems */}
+            <div className="flex flex-col gap-2 sm:gap-3 items-end">
+            {/* LIVES - BIG AND COLORFUL */}
+            <div className="bg-gradient-to-r from-red-400 to-pink-400 px-4 sm:px-6 py-2 sm:py-3 rounded-3xl border-4 border-white shadow-2xl">
                 <div className="flex items-center gap-2">
-                    <div className="font-bold text-xs sm:text-sm text-white bg-gradient-to-r from-blue-400 to-cyan-400 px-3 py-1 rounded-full border-2 border-white shadow-lg">
-                        💎 {gemsCollected}
+                    <span className="text-white font-black text-sm sm:text-base md:text-lg">Lives:</span>
+                    <div className="flex gap-1 sm:gap-2">
+                        {[...Array(maxLives)].map((_, i) => (
+                            <div
+                                key={i}
+                                className={`transition-all duration-200 transform ${
+                                    i < lives ? 'scale-110 animate-bounce' : 'scale-75 opacity-30'
+                                }`}
+                            >
+                                <Heart
+                                    className={`w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 ${
+                                        i < lives
+                                            ? 'text-red-600 fill-red-600 drop-shadow-lg'
+                                            : 'text-gray-400 fill-gray-400'
+                                    }`}
+                                />
+                            </div>
+                        ))}
                     </div>
-                    <VolumeControl />
                 </div>
             </div>
+
+            {/* GEMS - Big and Sparkly */}
+            <div className="bg-gradient-to-r from-blue-400 to-cyan-400 px-4 sm:px-6 py-2 sm:py-3 rounded-3xl border-4 border-white shadow-2xl">
+                <div className="flex items-center gap-2">
+                    <span className="text-2xl sm:text-3xl md:text-4xl animate-bounce">💎</span>
+                    <span className="text-white font-black text-base sm:text-lg md:text-xl">{gemsCollected}</span>
+                </div>
+            </div>
+
+            {/* Volume Control */}
+            <div className="bg-white/90 p-2 sm:p-3 rounded-2xl border-3 border-purple-300 shadow-lg">
+                <VolumeControl />
+            </div>
+            </div>
+        </div>
+
+        {/* ===== CENTER SECTION ===== */}
+        {/* SPARKLE Letters Collection - PROMINENT */}
+        <div className="absolute top-32 sm:top-40 md:top-48 left-1/2 transform -translate-x-1/2 w-full flex flex-col items-center gap-3">
+            <div className="text-center">
+                <p className="text-white font-black text-xs sm:text-sm md:text-base drop-shadow-lg mb-2">
+                    ✨ COLLECT LETTERS TO SPELL ✨
+                </p>
+                <div className="flex gap-1 sm:gap-2 justify-center flex-wrap px-4">
+                    {target.map((char, idx) => {
+                        const isCollected = collectedLetters.includes(idx);
+                        const color = SPARKLE_COLORS[idx];
+
+                        return (
+                            <div
+                                key={idx}
+                                style={{
+                                    borderColor: isCollected ? color : '#E5E7EB',
+                                    backgroundColor: isCollected ? color : 'rgba(255, 255, 255, 0.8)',
+                                    boxShadow: isCollected
+                                        ? `0 0 20px ${color}, 0 0 40px ${color}`
+                                        : 'none'
+                                }}
+                                className={`w-8 h-10 sm:w-10 sm:h-12 md:w-12 md:h-14 flex items-center justify-center border-4 font-black text-base sm:text-lg md:text-2xl rounded-2xl transform transition-all duration-300 ${
+                                    isCollected
+                                        ? 'scale-125 animate-bounce'
+                                        : 'scale-100'
+                                }`}
+                            >
+                                <span
+                                    style={{
+                                        color: isCollected ? '#FFFFFF' : '#9CA3AF'
+                                    }}
+                                >
+                                    {char}
+                                </span>
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+
+            {/* Big Combo Display */}
+            {combo > 0 && (
+                <div className="animate-bounce">
+                    <div className={`bg-gradient-to-r from-yellow-300 via-orange-400 to-red-400 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-black text-xl sm:text-2xl md:text-4xl border-4 border-white shadow-2xl drop-shadow-lg ${
+                        combo >= 5 ? 'animate-pulse' : ''
+                    }`}>
+                        🔥 {combo}x COMBO! 🔥
+                    </div>
+                </div>
+            )}
         </div>
 
         {/* Active Skill Indicator */}
         {isImmortalityActive && (
-             <div className="absolute top-24 left-1/2 transform -translate-x-1/2 text-purple-700 font-bold text-xl md:text-2xl animate-pulse flex items-center bg-white/90 px-4 py-2 rounded-full border-2 border-purple-400 shadow-xl">
-                 <Shield className="mr-2 fill-purple-500" /> 🌈 PROTECTED! 🌈
-             </div>
+            <div className="absolute top-64 sm:top-72 md:top-80 left-1/2 transform -translate-x-1/2">
+                <div className="bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 text-white font-black text-lg sm:text-xl md:text-2xl animate-pulse px-6 sm:px-8 py-3 sm:py-4 rounded-full border-4 border-white shadow-2xl drop-shadow-lg flex items-center justify-center gap-2">
+                    <Shield className="w-6 h-6 sm:w-8 sm:h-8 fill-white" />
+                    🌈 IMMORTAL MODE! 🌈
+                    <Shield className="w-6 h-6 sm:w-8 sm:h-8 fill-white" />
+                </div>
+            </div>
         )}
 
-        {/* SPARKLE Collection Status - Just below Top Bar */}
-        <div className="absolute top-20 md:top-28 left-1/2 transform -translate-x-1/2 flex space-x-1 md:space-x-2">
-            {target.map((char, idx) => {
-                const isCollected = collectedLetters.includes(idx);
-                const color = SPARKLE_COLORS[idx];
-
-                return (
-                    <div
-                        key={idx}
-                        style={{
-                            borderColor: isCollected ? color : '#E5E7EB',
-                            color: isCollected ? '#FFFFFF' : '#9CA3AF',
-                            boxShadow: isCollected ? `0 0 15px ${color}` : 'none',
-                            backgroundColor: isCollected ? color : 'rgba(255, 255, 255, 0.7)'
-                        }}
-                        className={`w-7 h-9 md:w-9 md:h-11 flex items-center justify-center border-3 font-black text-base md:text-lg rounded-xl transform transition-all duration-300 ${isCollected ? 'scale-110' : 'scale-100'}`}
-                    >
-                        {char}
+        {/* ===== BOTTOM SECTION ===== */}
+        <div className="w-full flex justify-between items-end gap-2">
+            {/* Left: Best Combo Stats */}
+            <div className="flex flex-col gap-1 sm:gap-2">
+                {maxCombo > 0 && (
+                    <div className="bg-gradient-to-r from-yellow-300 to-orange-400 px-3 sm:px-4 py-2 sm:py-3 rounded-2xl border-3 border-white shadow-lg">
+                        <p className="text-yellow-900 font-black text-xs sm:text-sm">
+                            Best Combo: <span className="text-lg sm:text-xl">{maxCombo}x</span>
+                        </p>
                     </div>
-                );
-            })}
-        </div>
+                )}
+                {streak > 0 && (
+                    <div className="bg-gradient-to-r from-purple-400 to-pink-400 px-3 sm:px-4 py-2 sm:py-3 rounded-2xl border-3 border-white shadow-lg">
+                        <p className="text-white font-black text-xs sm:text-sm">
+                            ⭐ {streak} Streak!
+                        </p>
+                    </div>
+                )}
+            </div>
 
-        {/* Combo/Streak Display - NEW! */}
-        {combo > 0 && (
-             <div className="absolute top-40 md:top-48 left-1/2 transform -translate-x-1/2">
-                 <div className={`bg-gradient-to-r from-yellow-400 to-orange-400 text-white px-4 py-2 rounded-full font-black text-lg md:text-xl border-4 border-white shadow-2xl ${combo >= 5 ? 'animate-pulse' : ''}`}>
-                     🔥 {combo}x COMBO!
-                 </div>
-             </div>
-        )}
-
-        {/* Streak Display for Letters - NEW! */}
-        {streak > 0 && (
-             <div className="absolute bottom-32 md:bottom-40 left-1/2 transform -translate-x-1/2">
-                 <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-3 py-1 rounded-full font-bold text-sm md:text-base border-2 border-white shadow-lg">
-                     ⭐ {streak} Letter Streak!
-                 </div>
-             </div>
-        )}
-
-        {/* Bottom Overlay */}
-        <div className="w-full flex justify-between items-end">
-             {/* Left: Combo Count */}
-             {maxCombo > 0 && (
-                 <div className="bg-white/80 px-3 py-1 rounded-full border-2 border-yellow-400">
-                     <span className="text-yellow-600 font-bold text-xs md:text-sm">Best Combo: {maxCombo}x</span>
-                 </div>
-             )}
-             {/* Right: Speed */}
-             <div className="flex items-center space-x-2 bg-white/80 px-3 py-1 rounded-full border-2 border-purple-300">
-                 <Zap className="w-4 h-4 md:w-6 md:h-6 text-purple-500 animate-pulse" />
-                 <span className="text-purple-700 font-bold text-sm md:text-lg">Speed {Math.round((speed / RUN_SPEED_BASE) * 100)}%</span>
-             </div>
+            {/* Right: Speed */}
+            <div className="bg-gradient-to-r from-purple-500 to-indigo-500 px-4 sm:px-6 py-2 sm:py-3 rounded-2xl border-3 border-white shadow-lg">
+                <div className="flex items-center gap-2">
+                    <Zap className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 text-yellow-300 animate-pulse" />
+                    <span className="text-white font-black text-sm sm:text-base md:text-lg">
+                        {Math.round((speed / RUN_SPEED_BASE) * 100)}%
+                    </span>
+                </div>
+            </div>
         </div>
 
         {/* Floating score text overlay */}
