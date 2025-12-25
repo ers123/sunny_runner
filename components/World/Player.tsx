@@ -17,15 +17,17 @@ const GRAVITY = 50;
 const JUMP_FORCE = 16; // Results in ~2.56 height (v^2 / 2g)
 
 // Static Geometries
-const TORSO_GEO = new THREE.CylinderGeometry(0.25, 0.15, 0.6, 4);
+const TORSO_GEO = new THREE.CylinderGeometry(0.25, 0.15, 0.6, 8);
 const JETPACK_GEO = new THREE.BoxGeometry(0.3, 0.4, 0.15);
 const GLOW_STRIP_GEO = new THREE.PlaneGeometry(0.05, 0.2);
-const HEAD_GEO = new THREE.BoxGeometry(0.25, 0.3, 0.3);
+const HEAD_GEO = new THREE.BoxGeometry(0.3, 0.35, 0.35);
 const ARM_GEO = new THREE.BoxGeometry(0.12, 0.6, 0.12);
-const JOINT_SPHERE_GEO = new THREE.SphereGeometry(0.07);
-const HIPS_GEO = new THREE.CylinderGeometry(0.16, 0.16, 0.2);
+const JOINT_SPHERE_GEO = new THREE.SphereGeometry(0.1, 16, 16);
+const HIPS_GEO = new THREE.CylinderGeometry(0.18, 0.18, 0.25, 8);
 const LEG_GEO = new THREE.BoxGeometry(0.15, 0.7, 0.15);
 const SHADOW_GEO = new THREE.CircleGeometry(0.5, 32);
+const EYE_GEO = new THREE.SphereGeometry(0.05, 8, 8);
+const ANTENNA_GEO = new THREE.CylinderGeometry(0.03, 0.03, 0.3, 6);
 
 export const Player: React.FC = () => {
   const groupRef = useRef<THREE.Group>(null);
@@ -57,7 +59,7 @@ export const Player: React.FC = () => {
   const lastDamageTime = useRef(0);
 
   // Memoized Materials - Use selected character colors!
-  const { armorMaterial, jointMaterial, glowMaterial, shadowMaterial } = useMemo(() => {
+  const { armorMaterial, jointMaterial, glowMaterial, shadowMaterial, eyeMaterial, antennaMaterial } = useMemo(() => {
       const character = CHARACTERS[selectedCharacter];
       const armorColor = isImmortalityActive ? '#FFD700' : character.primaryColor;
       const glowColor = isImmortalityActive ? '#FFFFFF' : character.secondaryColor;
@@ -65,20 +67,34 @@ export const Player: React.FC = () => {
       return {
           armorMaterial: new THREE.MeshStandardMaterial({
               color: armorColor,
-              roughness: 0.1,
-              metalness: 0.8,
+              roughness: 0.15,
+              metalness: 0.9,
               emissive: armorColor,
-              emissiveIntensity: 0.3 // Makes it glow!
+              emissiveIntensity: isImmortalityActive ? 0.8 : 0.5, // Brighter glow!
           }),
           jointMaterial: new THREE.MeshStandardMaterial({
-              color: '#E6E6FA',
-              roughness: 0.3,
-              metalness: 0.5,
-              emissive: '#DDA0DD',
-              emissiveIntensity: 0.2
+              color: glowColor,
+              roughness: 0.2,
+              metalness: 0.7,
+              emissive: glowColor,
+              emissiveIntensity: 0.4
           }),
           glowMaterial: new THREE.MeshBasicMaterial({ color: glowColor }),
-          shadowMaterial: new THREE.MeshBasicMaterial({ color: character.primaryColor, opacity: 0.3, transparent: true })
+          shadowMaterial: new THREE.MeshBasicMaterial({ color: character.primaryColor, opacity: 0.25, transparent: true }),
+          eyeMaterial: new THREE.MeshStandardMaterial({
+              color: '#000000',
+              roughness: 0.3,
+              metalness: 0.8,
+              emissive: '#00FF88',
+              emissiveIntensity: 0.6
+          }),
+          antennaMaterial: new THREE.MeshStandardMaterial({
+              color: glowColor,
+              roughness: 0.1,
+              metalness: 0.9,
+              emissive: glowColor,
+              emissiveIntensity: 0.7
+          })
       };
   }, [isImmortalityActive, selectedCharacter]); // Recreate when character or immortality changes
 
@@ -296,6 +312,11 @@ export const Player: React.FC = () => {
         {/* Head */}
         <group ref={headRef} position={[0, 0.6, 0]}>
             <mesh castShadow geometry={HEAD_GEO} material={armorMaterial} />
+            {/* Eyes */}
+            <mesh position={[-0.08, 0.05, 0.15]} castShadow geometry={EYE_GEO} material={eyeMaterial} />
+            <mesh position={[0.08, 0.05, 0.15]} castShadow geometry={EYE_GEO} material={eyeMaterial} />
+            {/* Antenna */}
+            <mesh position={[0, 0.25, 0]} geometry={ANTENNA_GEO} material={antennaMaterial} />
         </group>
 
         {/* Arms */}
