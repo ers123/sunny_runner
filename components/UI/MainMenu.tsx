@@ -71,53 +71,56 @@ export const MainMenu: React.FC = () => {
         </div>
 
         {/* Menu Buttons */}
-        <div className="flex flex-col space-y-3 sm:space-y-4">
-          {/* Start Game Button */}
+        <div className="flex flex-col space-y-4 sm:space-y-5">
+          {/* Start Game Button - BIG AND PROMINENT */}
           <button
             onClick={startGame}
-            className="group relative py-4 sm:py-5 px-6 sm:px-8 bg-gradient-to-r from-pink-500 to-purple-500 text-white font-black text-xl sm:text-2xl rounded-full hover:scale-105 active:scale-95 transition-all shadow-xl hover:shadow-2xl w-full"
+            className="group relative py-6 sm:py-8 px-8 sm:px-10 bg-gradient-to-br from-pink-500 via-pink-400 to-purple-500 text-white font-black text-3xl sm:text-4xl md:text-5xl rounded-full hover:scale-110 active:scale-95 transition-all shadow-2xl hover:shadow-3xl w-full animate-bounce"
           >
-            <div className="flex items-center justify-center space-x-2 sm:space-x-3">
-              <Play className="w-6 sm:w-8 h-6 sm:h-8 fill-white flex-shrink-0" />
-              <span className="truncate">START GAME</span>
+            <div className="flex items-center justify-center space-x-3 sm:space-x-4">
+              <Play className="w-8 sm:w-10 h-8 sm:h-10 fill-white flex-shrink-0 animate-pulse" />
+              <span className="truncate">START!</span>
             </div>
             {/* Glow Effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full blur-xl opacity-0 group-hover:opacity-50 transition-opacity -z-10" />
+            <div className="absolute inset-0 bg-gradient-to-br from-pink-300 to-purple-300 rounded-full blur-2xl opacity-0 group-hover:opacity-60 transition-opacity -z-10" />
           </button>
 
-          {/* Secondary Buttons Grid */}
-          <div className="grid grid-cols-3 gap-2 sm:gap-3">
+          {/* Secondary Buttons - FULL WIDTH AND LARGER */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
             {/* Daily Challenge Button */}
             <button
               onClick={() => setShowDailyChallenge(true)}
-              className="py-3 sm:py-4 px-2 sm:px-4 bg-gradient-to-r from-red-400 to-orange-400 text-white font-bold text-xs sm:text-sm rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg hover:shadow-xl"
+              className="group relative py-5 sm:py-6 px-4 sm:px-6 bg-gradient-to-br from-orange-400 via-red-400 to-red-500 text-white font-black text-lg sm:text-xl rounded-3xl hover:scale-110 active:scale-95 transition-all shadow-xl hover:shadow-2xl border-4 border-orange-300"
             >
-              <div className="flex flex-col items-center justify-center space-y-1">
-                <Flame className="w-5 sm:w-6 h-5 sm:h-6" />
-                <span className="text-xs sm:text-sm">Challenge</span>
+              <div className="flex flex-col items-center justify-center space-y-2">
+                <Flame className="w-7 sm:w-8 h-7 sm:h-8 animate-bounce" style={{ animationDelay: '0s' }} />
+                <span className="font-bold text-base sm:text-lg">🔥 CHALLENGE</span>
               </div>
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-300 to-red-400 rounded-3xl blur-xl opacity-0 group-hover:opacity-40 transition-opacity -z-10" />
             </button>
 
             {/* Character Select Button */}
             <button
               onClick={() => setShowCharacterSelect(true)}
-              className="py-3 sm:py-4 px-2 sm:px-4 bg-gradient-to-r from-purple-400 to-pink-400 text-white font-bold text-xs sm:text-sm rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg hover:shadow-xl"
+              className="group relative py-5 sm:py-6 px-4 sm:px-6 bg-gradient-to-br from-purple-400 via-pink-400 to-purple-500 text-white font-black text-lg sm:text-xl rounded-3xl hover:scale-110 active:scale-95 transition-all shadow-xl hover:shadow-2xl border-4 border-purple-300"
             >
-              <div className="flex flex-col items-center justify-center space-y-1">
-                <User className="w-5 sm:w-6 h-5 sm:h-6" />
-                <span className="text-xs sm:text-sm">Character</span>
+              <div className="flex flex-col items-center justify-center space-y-2">
+                <User className="w-7 sm:w-8 h-7 sm:h-8 animate-bounce" style={{ animationDelay: '0.2s' }} />
+                <span className="font-bold text-base sm:text-lg">👥 CHARACTER</span>
               </div>
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-300 to-pink-300 rounded-3xl blur-xl opacity-0 group-hover:opacity-40 transition-opacity -z-10" />
             </button>
 
             {/* Leaderboard Button */}
             <button
               onClick={() => setShowLeaderboard(true)}
-              className="py-3 sm:py-4 px-2 sm:px-4 bg-gradient-to-r from-yellow-400 to-orange-400 text-white font-bold text-xs sm:text-sm rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg hover:shadow-xl"
+              className="group relative py-5 sm:py-6 px-4 sm:px-6 bg-gradient-to-br from-yellow-400 via-amber-400 to-orange-500 text-white font-black text-lg sm:text-xl rounded-3xl hover:scale-110 active:scale-95 transition-all shadow-xl hover:shadow-2xl border-4 border-yellow-300"
             >
-              <div className="flex flex-col items-center justify-center space-y-1">
-                <Trophy className="w-5 sm:w-6 h-5 sm:h-6" />
-                <span className="text-xs sm:text-sm">Leaderboard</span>
+              <div className="flex flex-col items-center justify-center space-y-2">
+                <Trophy className="w-7 sm:w-8 h-7 sm:h-8 animate-bounce" style={{ animationDelay: '0.4s' }} />
+                <span className="font-bold text-base sm:text-lg">🏆 TOP SCORES</span>
               </div>
+              <div className="absolute inset-0 bg-gradient-to-br from-yellow-300 to-orange-400 rounded-3xl blur-xl opacity-0 group-hover:opacity-40 transition-opacity -z-10" />
             </button>
           </div>
         </div>

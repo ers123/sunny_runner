@@ -18,16 +18,20 @@ export const CharacterSelector: React.FC<{ onClose: () => void }> = ({ onClose }
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[200] p-4">
-      <div className="bg-gradient-to-br from-pink-100 via-purple-100 to-blue-100 rounded-3xl p-6 md:p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto border-4 border-white/50 shadow-2xl">
-        <div className="text-center mb-6">
-          <h2 className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-500">
-            Choose Your Runner!
+    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-[200] p-3 sm:p-4 overflow-y-auto">
+      <div className="bg-gradient-to-br from-pink-100 via-purple-100 to-blue-100 rounded-3xl sm:rounded-4xl p-6 sm:p-10 max-w-3xl w-full border-6 border-white shadow-2xl my-auto">
+        {/* Header */}
+        <div className="text-center mb-8 sm:mb-10">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 mb-2">
+            🎮 CHOOSE YOUR HERO! 🎮
           </h2>
-          <p className="text-gray-600 mt-2">Unlock new characters by completing challenges</p>
+          <p className="text-gray-700 mt-3 text-lg sm:text-xl font-bold">
+            ✨ Unlock new characters by completing challenges! ✨
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Character Grid - LARGER CARDS */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 mb-8">
           {Object.values(CHARACTERS).map((char) => {
             const isUnlocked = unlockedCharacters.includes(char.id);
             const isSelected = selectedCharacter === char.id;
@@ -37,63 +41,80 @@ export const CharacterSelector: React.FC<{ onClose: () => void }> = ({ onClose }
                 key={char.id}
                 onClick={() => handleSelect(char.id)}
                 disabled={!isUnlocked}
-                className={`relative p-4 rounded-2xl border-4 transition-all ${
+                className={`group relative p-6 sm:p-8 rounded-3xl border-6 transition-all transform duration-200 ${
                   isSelected
-                    ? 'border-yellow-400 bg-gradient-to-br from-yellow-50 to-orange-50 scale-105'
+                    ? 'border-yellow-400 bg-gradient-to-br from-yellow-100 to-orange-100 scale-110 shadow-2xl hover:scale-115'
                     : isUnlocked
-                    ? 'border-purple-300 bg-white hover:scale-105 hover:border-purple-400'
-                    : 'border-gray-300 bg-gray-100 opacity-60 cursor-not-allowed'
+                    ? 'border-purple-400 bg-white hover:scale-110 hover:border-purple-500 hover:shadow-2xl shadow-lg'
+                    : 'border-gray-400 bg-gray-200 opacity-70 cursor-not-allowed'
                 }`}
               >
-                {/* Selected Badge */}
+                {/* Selected Badge - BIGGER */}
                 {isSelected && (
-                  <div className="absolute top-2 right-2 bg-yellow-400 text-white rounded-full p-1">
-                    <Check className="w-5 h-5" />
+                  <div className="absolute -top-3 -right-3 bg-yellow-400 text-white rounded-full p-3 shadow-xl">
+                    <Check className="w-6 h-6 sm:w-8 sm:h-8" />
                   </div>
                 )}
 
-                {/* Lock Icon */}
+                {/* Lock Icon - BIGGER */}
                 {!isUnlocked && (
-                  <div className="absolute top-2 right-2 bg-gray-400 text-white rounded-full p-1">
-                    <Lock className="w-5 h-5" />
+                  <div className="absolute -top-3 -right-3 bg-gray-500 text-white rounded-full p-3 shadow-xl">
+                    <Lock className="w-6 h-6 sm:w-8 sm:h-8" />
                   </div>
                 )}
 
-                {/* Character Preview */}
-                <div className="flex items-center space-x-3 mb-2">
+                {/* Character Preview - MUCH LARGER */}
+                <div className="flex flex-col items-center justify-center mb-4">
                   <div
-                    className="w-16 h-16 rounded-full border-4 border-white shadow-lg"
+                    className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-6 border-white shadow-xl mb-4 group-hover:animate-bounce"
                     style={{
                       background: `linear-gradient(135deg, ${char.primaryColor}, ${char.secondaryColor})`,
                     }}
                   />
-                  <div className="flex-1 text-left">
-                    <h3 className="font-black text-lg">{char.name}</h3>
-                    <p className="text-sm text-gray-600">{char.description}</p>
-                  </div>
+                  <h3 className="font-black text-2xl sm:text-3xl text-gray-900 text-center leading-tight">
+                    {char.name}
+                  </h3>
+                  <p className="text-gray-700 text-sm sm:text-base font-bold mt-2 text-center">
+                    {char.description}
+                  </p>
                 </div>
 
-                {/* Color Preview */}
-                <div className="flex space-x-2 mb-2">
-                  <div className="flex-1 h-3 rounded-full" style={{ backgroundColor: char.primaryColor }} />
-                  <div className="flex-1 h-3 rounded-full" style={{ backgroundColor: char.secondaryColor }} />
-                  <div className="flex-1 h-3 rounded-full" style={{ backgroundColor: char.trailColor }} />
+                {/* Color Preview - MUCH BIGGER */}
+                <div className="flex gap-3 mb-4">
+                  <div
+                    className="flex-1 h-5 sm:h-6 rounded-xl border-2 border-white shadow-md"
+                    style={{ backgroundColor: char.primaryColor }}
+                  />
+                  <div
+                    className="flex-1 h-5 sm:h-6 rounded-xl border-2 border-white shadow-md"
+                    style={{ backgroundColor: char.secondaryColor }}
+                  />
+                  <div
+                    className="flex-1 h-5 sm:h-6 rounded-xl border-2 border-white shadow-md"
+                    style={{ backgroundColor: char.trailColor }}
+                  />
                 </div>
 
-                {/* Unlock Condition */}
-                <div className="text-xs text-gray-500 font-semibold">
-                  {isUnlocked ? '✅ Unlocked!' : `🔒 ${char.unlockCondition}`}
+                {/* Unlock Condition - BIGGER TEXT */}
+                <div className="text-sm sm:text-base font-bold text-center">
+                  {isUnlocked ? (
+                    <span className="text-green-600">✅ UNLOCKED! ✅</span>
+                  ) : (
+                    <span className="text-gray-600">🔒 {char.unlockCondition}</span>
+                  )}
                 </div>
               </button>
             );
           })}
         </div>
 
+        {/* Start Playing Button - BIG AND BOLD */}
         <button
           onClick={onClose}
-          className="mt-6 w-full py-3 bg-gradient-to-r from-pink-500 to-purple-500 text-white font-black text-xl rounded-full hover:scale-105 transition-all shadow-lg"
+          className="group relative w-full py-6 sm:py-8 bg-gradient-to-r from-pink-500 via-purple-500 to-pink-500 text-white font-black text-2xl sm:text-3xl rounded-full hover:scale-110 active:scale-95 transition-all shadow-2xl hover:shadow-3xl border-4 border-white"
         >
-          Start Playing!
+          🎮 START PLAYING! 🎮
+          <div className="absolute inset-0 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full blur-xl opacity-0 group-hover:opacity-50 transition-opacity -z-10" />
         </button>
       </div>
     </div>
