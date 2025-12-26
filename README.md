@@ -5,9 +5,13 @@ A magical 3D endless runner game designed for kids! Collect colorful letters to 
 ## 🎮 Game Features
 
 - **Collect Letters**: Find all 7 letters (S-P-A-R-K-L-E) to complete each level
-- **3 Exciting Levels**: Progress through increasingly challenging levels
+- **10 Exciting Levels**: Progress through increasingly challenging levels with increasing difficulty
+- **Character Selection**: Choose from 5 unique magical characters to play with
+- **Background Music**: Enjoy procedurally generated background music that adapts to gameplay
+- **Daily Challenges**: Complete daily missions to earn bonus sparkles and build streaks
+- **Leaderboard**: Track your best scores and compete with yourself
 - **Magical Shop**: Buy power-ups like Magical Wings, Extra Hearts, and Rainbow Shield
-- **Beautiful Graphics**: Pastel rainbow theme with sparkly effects
+- **Beautiful Graphics**: Pastel rainbow theme with sparkly effects and enhanced 3D character design
 - **PWA Support**: Install on your device and play offline!
 - **Mobile Friendly**: Touch controls with swipe and tap
 
