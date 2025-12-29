@@ -29,6 +29,18 @@ const SHADOW_GEO = new THREE.CircleGeometry(0.5, 32);
 const EYE_GEO = new THREE.SphereGeometry(0.05, 8, 8);
 const ANTENNA_GEO = new THREE.CylinderGeometry(0.03, 0.03, 0.3, 6);
 
+// NEW: Trendy Visuals Geometries
+const HALO_GEO = new THREE.TorusGeometry(0.15, 0.02, 8, 32);
+const WING_GEO = new THREE.ExtrudeGeometry(
+  new THREE.Shape()
+    .moveTo(0, 0)
+    .bezierCurveTo(0.2, 0.2, 0.4, 0.4, 0.6, 0.2)
+    .bezierCurveTo(0.4, 0.1, 0.2, 0.0, 0, 0),
+  { depth: 0.02, bevelEnabled: false }
+);
+// Rotate wing to sit on back correctly
+WING_GEO.rotateY(Math.PI / 4);
+
 export const Player: React.FC = () => {
   const groupRef = useRef<THREE.Group>(null);
   const bodyRef = useRef<THREE.Group>(null);
@@ -40,6 +52,8 @@ export const Player: React.FC = () => {
   const leftLegRef = useRef<THREE.Group>(null);
   const rightLegRef = useRef<THREE.Group>(null);
   const headRef = useRef<THREE.Group>(null);
+  const haloRef = useRef<THREE.Mesh>(null);
+  const wingsRef = useRef<THREE.Group>(null);
 
   const { status, laneCount, takeDamage, hasDoubleJump, activateImmortality, isImmortalityActive, selectedCharacter } = useStore();
   
@@ -59,7 +73,7 @@ export const Player: React.FC = () => {
   const lastDamageTime = useRef(0);
 
   // Memoized Materials - Use selected character colors!
-  const { armorMaterial, jointMaterial, glowMaterial, shadowMaterial, eyeMaterial, antennaMaterial } = useMemo(() => {
+  const { armorMaterial, jointMaterial, glowMaterial, shadowMaterial, eyeMaterial, antennaMaterial, haloMaterial } = useMemo(() => {
       const character = CHARACTERS[selectedCharacter];
       const armorColor = isImmortalityActive ? '#FFD700' : character.primaryColor;
       const glowColor = isImmortalityActive ? '#FFFFFF' : character.secondaryColor;
@@ -94,6 +108,13 @@ export const Player: React.FC = () => {
               metalness: 0.9,
               emissive: glowColor,
               emissiveIntensity: 0.7
+          }),
+          haloMaterial: new THREE.MeshStandardMaterial({
+              color: '#FFFFE0', // Light yellow
+              emissive: '#FFFFE0',
+              emissiveIntensity: 1.0,
+              roughness: 0,
+              metalness: 1
           })
       };
   }, [isImmortalityActive, selectedCharacter]); // Recreate when character or immortality changes
@@ -232,6 +253,18 @@ export const Player: React.FC = () => {
     // 3. Skeletal Animation
     const time = state.clock.elapsedTime * 25; 
     
+    // Halo Spin
+    if (haloRef.current) {
+        haloRef.current.rotation.y += delta * 2;
+        haloRef.current.rotation.x = Math.sin(time * 0.1) * 0.1;
+    }
+
+    // Wings Flap
+    if (wingsRef.current) {
+        const flapSpeed = isJumping.current ? 20 : 10;
+        wingsRef.current.rotation.y = Math.sin(state.clock.elapsedTime * flapSpeed) * 0.2;
+    }
+
     if (!isJumping.current) {
         // Running Cycle
         if (leftArmRef.current) leftArmRef.current.rotation.x = Math.sin(time) * 0.7;
@@ -304,10 +337,19 @@ export const Player: React.FC = () => {
         {/* Torso */}
         <mesh castShadow position={[0, 0.2, 0]} geometry={TORSO_GEO} material={armorMaterial} />
 
-        {/* Jetpack */}
-        <mesh position={[0, 0.2, -0.2]} geometry={JETPACK_GEO} material={jointMaterial} />
-        <mesh position={[-0.08, 0.1, -0.28]} geometry={GLOW_STRIP_GEO} material={glowMaterial} />
-        <mesh position={[0.08, 0.1, -0.28]} geometry={GLOW_STRIP_GEO} material={glowMaterial} />
+        {/* Jetpack / Wings Container */}
+        <group position={[0, 0.3, -0.2]}>
+            <mesh geometry={JETPACK_GEO} material={jointMaterial} />
+
+            {/* New Trendy Wings */}
+            <group ref={wingsRef}>
+                <mesh position={[0.2, 0, 0]} rotation={[0, 0, -0.2]} geometry={WING_GEO} material={glowMaterial} />
+                <mesh position={[-0.2, 0, 0]} rotation={[0, Math.PI, 0.2]} geometry={WING_GEO} material={glowMaterial} />
+            </group>
+
+            <mesh position={[-0.08, 0.1, -0.1]} geometry={GLOW_STRIP_GEO} material={glowMaterial} />
+            <mesh position={[0.08, 0.1, -0.1]} geometry={GLOW_STRIP_GEO} material={glowMaterial} />
+        </group>
 
         {/* Head */}
         <group ref={headRef} position={[0, 0.6, 0]}>
@@ -317,6 +359,9 @@ export const Player: React.FC = () => {
             <mesh position={[0.08, 0.05, 0.15]} castShadow geometry={EYE_GEO} material={eyeMaterial} />
             {/* Antenna */}
             <mesh position={[0, 0.25, 0]} geometry={ANTENNA_GEO} material={antennaMaterial} />
+
+            {/* New Halo */}
+            <mesh ref={haloRef} position={[0, 0.45, 0]} rotation={[Math.PI/2 - 0.2, 0, 0]} geometry={HALO_GEO} material={haloMaterial} />
         </group>
 
         {/* Arms */}
