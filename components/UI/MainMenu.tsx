@@ -20,138 +20,129 @@ export const MainMenu: React.FC = () => {
   const currentCharacter = CHARACTERS[selectedCharacter];
 
   return (
-    <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-pink-300 via-purple-300 to-blue-300 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-      {/* Animated Background Sparkles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(20)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute animate-pulse"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 2}s`,
-              animationDuration: `${2 + Math.random() * 2}s`
-            }}
-          >
-            <Sparkles className="text-white/30" size={20 + Math.random() * 30} />
+    <div className="absolute inset-0 w-full h-full overflow-hidden flex items-center justify-center">
+      {/* Cinematic Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 animate-gradient-xy">
+          {/* Animated Orbs */}
+          <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
+          <div className="absolute top-[-10%] right-[-10%] w-96 h-96 bg-yellow-300 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
+          <div className="absolute bottom-[-20%] left-[20%] w-96 h-96 bg-pink-400 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000"></div>
+
+          {/* Sparkle Overlay */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
+            {[...Array(15)].map((_, i) => (
+              <div
+                key={i}
+                className="absolute animate-pulse"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  animationDelay: `${Math.random() * 3}s`,
+                  animationDuration: `${2 + Math.random() * 2}s`
+                }}
+              >
+                <Sparkles className="text-white" size={10 + Math.random() * 20} />
+              </div>
+            ))}
           </div>
-        ))}
       </div>
 
-      {/* Main Menu Card */}
-      <div className="relative z-10 bg-white/95 backdrop-blur-sm rounded-3xl p-6 sm:p-8 lg:p-12 w-full max-w-md sm:max-w-lg lg:max-w-2xl shadow-2xl border-4 border-white my-auto">
-        {/* Title */}
-        <div className="text-center mb-6 sm:mb-8">
-          <h1 className="font-black text-4xl sm:text-5xl lg:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 mb-2 sm:mb-4 animate-pulse leading-tight">
-            ✨ RAINBOW
+      {/* Glassmorphism Main Card */}
+      <div className="relative z-10 w-full max-w-md mx-4 p-8 rounded-[2.5rem] bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] flex flex-col items-center gap-8">
+
+        {/* Title Section */}
+        <div className="text-center relative">
+          <h1 className="text-6xl sm:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-white/70 drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] tracking-tighter leading-[0.9]">
+            RAINBOW
+            <br />
+            <span className="text-4xl sm:text-5xl tracking-normal text-pink-300 bg-clip-text">RUNNER</span>
           </h1>
-          <h1 className="font-black text-4xl sm:text-5xl lg:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 mb-4 sm:mb-6 leading-tight">
-            SPARKLE RUNNER ✨
-          </h1>
-          <p className="text-gray-700 text-base sm:text-lg font-semibold">
-            Collect the letters, dodge obstacles, and reach Level 10!
-          </p>
+          <div className="mt-4 inline-flex items-center gap-2 bg-black/20 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/10">
+            <Sparkles size={14} className="text-yellow-300" />
+            <span className="text-white/90 text-xs font-bold uppercase tracking-widest">Season 1: Sparkle</span>
+            <Sparkles size={14} className="text-yellow-300" />
+          </div>
         </div>
 
-        {/* Current Character Display */}
-        <div className="mb-6 sm:mb-8 p-4 bg-gradient-to-r from-pink-100 to-purple-100 rounded-2xl border-3 border-purple-300">
-          <div className="flex items-center justify-center space-x-3">
+        {/* Character Quick View */}
+        <div
+            onClick={() => setShowCharacterSelect(true)}
+            className="w-full bg-gradient-to-r from-white/10 to-white/5 hover:from-white/20 hover:to-white/10 p-4 rounded-3xl border border-white/10 transition-all cursor-pointer group flex items-center gap-4"
+        >
             <div
-              className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border-3 border-white shadow-lg flex-shrink-0"
-              style={{
-                background: `linear-gradient(135deg, ${currentCharacter.primaryColor}, ${currentCharacter.secondaryColor})`,
-              }}
+                className="w-16 h-16 rounded-2xl shadow-lg border-2 border-white/30 group-hover:scale-105 transition-transform"
+                style={{ background: `linear-gradient(135deg, ${currentCharacter.primaryColor}, ${currentCharacter.secondaryColor})` }}
             />
-            <div className="text-left flex-1 min-w-0">
-              <p className="text-xs sm:text-sm text-gray-600 font-semibold">Playing as:</p>
-              <p className="font-black text-base sm:text-lg text-gray-900">{currentCharacter.name}</p>
+            <div className="flex-1">
+                <p className="text-white/60 text-xs font-bold uppercase tracking-wider mb-0.5">Ready to run</p>
+                <p className="text-white font-bold text-xl">{currentCharacter.name}</p>
             </div>
-          </div>
+            <div className="bg-white/10 p-2 rounded-full group-hover:bg-white/20 transition-colors">
+                <User className="text-white" size={20} />
+            </div>
         </div>
 
-        {/* Menu Buttons */}
-        <div className="flex flex-col space-y-4 sm:space-y-5">
-          {/* Start Game Button - BIG AND PROMINENT */}
-          <button
-            onClick={startGame}
-            className="group relative py-6 sm:py-8 px-8 sm:px-10 bg-gradient-to-br from-pink-500 via-pink-400 to-purple-500 text-white font-black text-3xl sm:text-4xl md:text-5xl rounded-full hover:scale-110 active:scale-95 transition-all shadow-2xl hover:shadow-3xl w-full animate-bounce"
-          >
-            <div className="flex items-center justify-center space-x-3 sm:space-x-4">
-              <Play className="w-8 sm:w-10 h-8 sm:h-10 fill-white flex-shrink-0 animate-pulse" />
-              <span className="truncate">START!</span>
+        {/* Main Action Buttons */}
+        <div className="w-full space-y-4">
+            {/* Play Button */}
+            <button
+                onClick={startGame}
+                className="w-full group relative h-20"
+            >
+                <div className="absolute inset-0 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 rounded-3xl blur opacity-75 group-hover:opacity-100 transition duration-500 group-hover:duration-200 animate-tilt"></div>
+                <div className="relative h-full bg-white rounded-3xl flex items-center justify-center gap-4 border border-white/50 shadow-xl transform group-hover:-translate-y-1 transition-all duration-200">
+                    <Play className="fill-purple-600 text-purple-600" size={32} />
+                    <span className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 tracking-wider">START GAME</span>
+                </div>
+            </button>
+
+            {/* Grid Menu */}
+            <div className="grid grid-cols-3 gap-3">
+                <MenuButton
+                    icon={<Flame size={24} />}
+                    label="Daily"
+                    color="text-orange-400"
+                    onClick={() => setShowDailyChallenge(true)}
+                />
+                <MenuButton
+                    icon={<Trophy size={24} />}
+                    label="Ranks"
+                    color="text-yellow-400"
+                    onClick={() => setShowLeaderboard(true)}
+                />
+                <MenuButton
+                    icon={<User size={24} />}
+                    label="Hero"
+                    color="text-blue-400"
+                    onClick={() => setShowCharacterSelect(true)}
+                />
             </div>
-            {/* Glow Effect */}
-            <div className="absolute inset-0 bg-gradient-to-br from-pink-300 to-purple-300 rounded-full blur-2xl opacity-0 group-hover:opacity-60 transition-opacity -z-10" />
-          </button>
-
-          {/* Secondary Buttons - FULL WIDTH AND LARGER */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-            {/* Daily Challenge Button */}
-            <button
-              onClick={() => setShowDailyChallenge(true)}
-              className="group relative py-5 sm:py-6 px-4 sm:px-6 bg-gradient-to-br from-orange-400 via-red-400 to-red-500 text-white font-black text-lg sm:text-xl rounded-3xl hover:scale-110 active:scale-95 transition-all shadow-xl hover:shadow-2xl border-4 border-orange-300"
-            >
-              <div className="flex flex-col items-center justify-center space-y-2">
-                <Flame className="w-7 sm:w-8 h-7 sm:h-8 animate-bounce" style={{ animationDelay: '0s' }} />
-                <span className="font-bold text-base sm:text-lg">🔥 CHALLENGE</span>
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-br from-orange-300 to-red-400 rounded-3xl blur-xl opacity-0 group-hover:opacity-40 transition-opacity -z-10" />
-            </button>
-
-            {/* Character Select Button */}
-            <button
-              onClick={() => setShowCharacterSelect(true)}
-              className="group relative py-5 sm:py-6 px-4 sm:px-6 bg-gradient-to-br from-purple-400 via-pink-400 to-purple-500 text-white font-black text-lg sm:text-xl rounded-3xl hover:scale-110 active:scale-95 transition-all shadow-xl hover:shadow-2xl border-4 border-purple-300"
-            >
-              <div className="flex flex-col items-center justify-center space-y-2">
-                <User className="w-7 sm:w-8 h-7 sm:h-8 animate-bounce" style={{ animationDelay: '0.2s' }} />
-                <span className="font-bold text-base sm:text-lg">👥 CHARACTER</span>
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-300 to-pink-300 rounded-3xl blur-xl opacity-0 group-hover:opacity-40 transition-opacity -z-10" />
-            </button>
-
-            {/* Leaderboard Button */}
-            <button
-              onClick={() => setShowLeaderboard(true)}
-              className="group relative py-5 sm:py-6 px-4 sm:px-6 bg-gradient-to-br from-yellow-400 via-amber-400 to-orange-500 text-white font-black text-lg sm:text-xl rounded-3xl hover:scale-110 active:scale-95 transition-all shadow-xl hover:shadow-2xl border-4 border-yellow-300"
-            >
-              <div className="flex flex-col items-center justify-center space-y-2">
-                <Trophy className="w-7 sm:w-8 h-7 sm:h-8 animate-bounce" style={{ animationDelay: '0.4s' }} />
-                <span className="font-bold text-base sm:text-lg">🏆 TOP SCORES</span>
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-br from-yellow-300 to-orange-400 rounded-3xl blur-xl opacity-0 group-hover:opacity-40 transition-opacity -z-10" />
-            </button>
-          </div>
-        </div>
-
-        {/* How to Play */}
-        <div className="mt-6 sm:mt-8 p-4 bg-blue-50 rounded-2xl border-2 border-blue-200">
-          <h3 className="font-bold text-blue-800 mb-2 text-center text-sm sm:text-base">How to Play</h3>
-          <ul className="text-xs sm:text-sm text-blue-700 space-y-1">
-            <li>⬅️ ➡️ <strong>Arrow Keys</strong> or <strong>A/D</strong> - Move</li>
-            <li>⬆️ <strong>Spacebar</strong> or <strong>W</strong> - Jump</li>
-            <li>✨ Collect <strong>S-P-A-R-K-L-E</strong> to level up</li>
-            <li>💎 Grab gems for points</li>
-            <li>❤️ Avoid obstacles</li>
-          </ul>
         </div>
       </div>
 
-      {/* Daily Challenge Modal */}
-      {showDailyChallenge && (
-        <DailyChallengeUI onClose={() => setShowDailyChallenge(false)} />
-      )}
-
-      {/* Character Selector Modal */}
-      {showCharacterSelect && (
-        <CharacterSelector onClose={() => setShowCharacterSelect(false)} />
-      )}
-
-      {/* Leaderboard Modal */}
-      {showLeaderboard && (
-        <LeaderboardView onClose={() => setShowLeaderboard(false)} />
-      )}
+      {/* Modals */}
+      {showDailyChallenge && <DailyChallengeUI onClose={() => setShowDailyChallenge(false)} />}
+      {showCharacterSelect && <CharacterSelector onClose={() => setShowCharacterSelect(false)} />}
+      {showLeaderboard && <LeaderboardView onClose={() => setShowLeaderboard(false)} />}
     </div>
   );
 };
+
+interface MenuButtonProps {
+    icon: React.ReactNode;
+    label: string;
+    onClick: () => void;
+    color: string;
+}
+
+const MenuButton: React.FC<MenuButtonProps> = ({ icon, label, onClick, color }) => (
+    <button
+        onClick={onClick}
+        className="flex flex-col items-center justify-center gap-2 bg-black/20 hover:bg-black/30 backdrop-blur-md rounded-2xl p-4 border border-white/5 transition-all active:scale-95 group"
+    >
+        <div className={`transform group-hover:scale-110 transition-transform ${color} drop-shadow-lg`}>
+            {icon}
+        </div>
+        <span className="text-white/90 text-xs font-bold uppercase tracking-wide">{label}</span>
+    </button>
+);

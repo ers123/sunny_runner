@@ -19,7 +19,8 @@ export const ParticleTrail: React.FC<ParticleTrailProps> = ({ position, isJumpin
   const particlesRef = useRef<THREE.Points>(null);
   const speed = useStore(state => state.speed);
 
-  const particleCount = 50;
+  // Increased particle count for "trendier" effect
+  const particleCount = 100;
 
   // Particle system with positions and velocities
   const { positions, velocities, lifetimes } = useMemo(() => {
@@ -83,10 +84,10 @@ export const ParticleTrail: React.FC<ParticleTrailProps> = ({ position, isJumpin
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.15}
+        size={0.25} // Increased size
         color={particleColor}
         transparent
-        opacity={0.8}
+        opacity={0.9} // Increased opacity
         sizeAttenuation
         blending={THREE.AdditiveBlending}
       />

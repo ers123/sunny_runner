@@ -4,118 +4,122 @@
 */
 
 import React from 'react';
-import { Lock, Check } from 'lucide-react';
+import { X, Lock, Check } from 'lucide-react';
 import { useStore } from '../../store';
-import { CHARACTERS } from '../../types';
+import { CHARACTERS, CharacterId } from '../../types';
 
-export const CharacterSelector: React.FC<{ onClose: () => void }> = ({ onClose }) => {
-  const { selectedCharacter, unlockedCharacters, selectCharacter } = useStore();
+interface CharacterSelectorProps {
+  onClose: () => void;
+}
 
-  const handleSelect = (characterId: string) => {
-    if (unlockedCharacters.includes(characterId)) {
-      selectCharacter(characterId);
-    }
-  };
+export const CharacterSelector: React.FC<CharacterSelectorProps> = ({ onClose }) => {
+  const { selectedCharacter, unlockedCharacters, selectCharacter, score } = useStore();
 
   return (
-    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-[200] p-3 sm:p-4 overflow-y-auto">
-      <div className="bg-gradient-to-br from-pink-100 via-purple-100 to-blue-100 rounded-3xl sm:rounded-4xl p-6 sm:p-10 max-w-3xl w-full border-6 border-white shadow-2xl my-auto">
+    <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-md transition-opacity" onClick={onClose} />
+
+      {/* Glass Container */}
+      <div className="relative w-full max-w-4xl max-h-[90vh] bg-[#1a1b2e] border border-white/10 rounded-[2.5rem] p-6 sm:p-8 shadow-2xl overflow-hidden flex flex-col">
+
         {/* Header */}
-        <div className="text-center mb-8 sm:mb-10">
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 mb-2">
-            🎮 CHOOSE YOUR HERO! 🎮
-          </h2>
-          <p className="text-gray-700 mt-3 text-lg sm:text-xl font-bold">
-            ✨ Unlock new characters by completing challenges! ✨
-          </p>
+        <div className="flex justify-between items-center mb-8 flex-shrink-0">
+          <div>
+            <h2 className="text-4xl font-black text-white tracking-tight mb-1">Select Runner</h2>
+            <p className="text-white/50 text-sm font-medium">Choose your sparkle champion</p>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-3 bg-white/5 hover:bg-white/10 rounded-full text-white/70 hover:text-white transition-colors border border-white/5"
+          >
+            <X size={24} />
+          </button>
         </div>
 
-        {/* Character Grid - LARGER CARDS */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 mb-8">
+        {/* Character Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 overflow-y-auto pr-2 pb-4 scrollbar-hide">
           {Object.values(CHARACTERS).map((char) => {
             const isUnlocked = unlockedCharacters.includes(char.id);
             const isSelected = selectedCharacter === char.id;
 
             return (
-              <button
+              <div
                 key={char.id}
-                onClick={() => handleSelect(char.id)}
-                disabled={!isUnlocked}
-                className={`group relative p-6 sm:p-8 rounded-3xl border-6 transition-all transform duration-200 ${
-                  isSelected
-                    ? 'border-yellow-400 bg-gradient-to-br from-yellow-100 to-orange-100 scale-110 shadow-2xl hover:scale-115'
+                onClick={() => isUnlocked && selectCharacter(char.id)}
+                className={`group relative overflow-hidden rounded-3xl transition-all duration-300 border
+                  ${isSelected
+                    ? 'bg-white/10 border-pink-500/50 ring-2 ring-pink-500 ring-offset-2 ring-offset-[#1a1b2e]'
                     : isUnlocked
-                    ? 'border-purple-400 bg-white hover:scale-110 hover:border-purple-500 hover:shadow-2xl shadow-lg'
-                    : 'border-gray-400 bg-gray-200 opacity-70 cursor-not-allowed'
-                }`}
+                      ? 'bg-white/5 border-white/10 hover:border-white/30 hover:bg-white/10 cursor-pointer'
+                      : 'bg-black/40 border-white/5 opacity-60 cursor-not-allowed'
+                  }
+                `}
               >
-                {/* Selected Badge - BIGGER */}
-                {isSelected && (
-                  <div className="absolute -top-3 -right-3 bg-yellow-400 text-white rounded-full p-3 shadow-xl">
-                    <Check className="w-6 h-6 sm:w-8 sm:h-8" />
+                {/* Character Preview Gradient */}
+                <div
+                  className={`h-32 w-full relative transition-transform duration-500 ${isUnlocked && 'group-hover:scale-105'}`}
+                  style={{
+                    background: isUnlocked
+                      ? `linear-gradient(135deg, ${char.primaryColor}, ${char.secondaryColor})`
+                      : '#1a1a1a'
+                  }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#1a1b2e] to-transparent opacity-90"></div>
+
+                  {/* Status Icon */}
+                  <div className="absolute top-4 right-4">
+                    {isSelected ? (
+                      <div className="bg-green-500 text-white p-1.5 rounded-full shadow-lg">
+                        <Check size={16} strokeWidth={4} />
+                      </div>
+                    ) : !isUnlocked ? (
+                      <div className="bg-black/50 text-white/50 p-2 rounded-full backdrop-blur-sm">
+                        <Lock size={16} />
+                      </div>
+                    ) : null}
                   </div>
-                )}
-
-                {/* Lock Icon - BIGGER */}
-                {!isUnlocked && (
-                  <div className="absolute -top-3 -right-3 bg-gray-500 text-white rounded-full p-3 shadow-xl">
-                    <Lock className="w-6 h-6 sm:w-8 sm:h-8" />
-                  </div>
-                )}
-
-                {/* Character Preview - MUCH LARGER */}
-                <div className="flex flex-col items-center justify-center mb-4">
-                  <div
-                    className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-6 border-white shadow-xl mb-4 group-hover:animate-bounce"
-                    style={{
-                      background: `linear-gradient(135deg, ${char.primaryColor}, ${char.secondaryColor})`,
-                    }}
-                  />
-                  <h3 className="font-black text-2xl sm:text-3xl text-gray-900 text-center leading-tight">
-                    {char.name}
-                  </h3>
-                  <p className="text-gray-700 text-sm sm:text-base font-bold mt-2 text-center">
-                    {char.description}
-                  </p>
                 </div>
 
-                {/* Color Preview - MUCH BIGGER */}
-                <div className="flex gap-3 mb-4">
-                  <div
-                    className="flex-1 h-5 sm:h-6 rounded-xl border-2 border-white shadow-md"
-                    style={{ backgroundColor: char.primaryColor }}
-                  />
-                  <div
-                    className="flex-1 h-5 sm:h-6 rounded-xl border-2 border-white shadow-md"
-                    style={{ backgroundColor: char.secondaryColor }}
-                  />
-                  <div
-                    className="flex-1 h-5 sm:h-6 rounded-xl border-2 border-white shadow-md"
-                    style={{ backgroundColor: char.trailColor }}
-                  />
-                </div>
+                {/* Info Content */}
+                <div className="p-5 relative -mt-12">
+                   <h3 className="text-2xl font-black text-white mb-1">{char.name}</h3>
+                   <p className="text-white/60 text-xs font-medium leading-relaxed mb-4 min-h-[40px]">
+                     {char.description}
+                   </p>
 
-                {/* Unlock Condition - BIGGER TEXT */}
-                <div className="text-sm sm:text-base font-bold text-center">
-                  {isUnlocked ? (
-                    <span className="text-green-600">✅ UNLOCKED! ✅</span>
-                  ) : (
-                    <span className="text-gray-600">🔒 {char.unlockCondition}</span>
-                  )}
+                   {/* Stats / Unlock Info */}
+                   {!isUnlocked ? (
+                     <div className="bg-black/40 rounded-xl p-3 border border-white/5">
+                        <p className="text-xs text-white/40 uppercase font-bold mb-1">Unlock Requirement</p>
+                        <p className="text-pink-400 font-bold text-sm">{char.unlockCondition}</p>
+                     </div>
+                   ) : (
+                     <div className="space-y-2">
+                        <div className="flex items-center justify-between text-xs font-bold">
+                            <span className="text-white/40 uppercase">Speed</span>
+                            <div className="flex gap-0.5">
+                                {[...Array(5)].map((_, i) => (
+                                    <div key={i} className={`w-8 h-1.5 rounded-full ${i < 4 ? 'bg-white' : 'bg-white/20'}`}></div>
+                                ))}
+                            </div>
+                        </div>
+                        {isSelected ? (
+                            <div className="w-full py-3 bg-white text-black text-center font-black rounded-xl text-sm uppercase tracking-wide">
+                                Selected
+                            </div>
+                        ) : (
+                            <button className="w-full py-3 bg-white/10 hover:bg-white text-white hover:text-black text-center font-bold rounded-xl text-sm uppercase tracking-wide transition-all border border-white/10">
+                                Select
+                            </button>
+                        )}
+                     </div>
+                   )}
                 </div>
-              </button>
+              </div>
             );
           })}
         </div>
-
-        {/* Start Playing Button - BIG AND BOLD */}
-        <button
-          onClick={onClose}
-          className="group relative w-full py-6 sm:py-8 bg-gradient-to-r from-pink-500 via-purple-500 to-pink-500 text-white font-black text-2xl sm:text-3xl rounded-full hover:scale-110 active:scale-95 transition-all shadow-2xl hover:shadow-3xl border-4 border-white"
-        >
-          🎮 START PLAYING! 🎮
-          <div className="absolute inset-0 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full blur-xl opacity-0 group-hover:opacity-50 transition-opacity -z-10" />
-        </button>
       </div>
     </div>
   );
