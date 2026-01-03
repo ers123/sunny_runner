@@ -20,138 +20,86 @@ export const MainMenu: React.FC = () => {
   const currentCharacter = CHARACTERS[selectedCharacter];
 
   return (
-    <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-pink-300 via-purple-300 to-blue-300 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-      {/* Animated Background Sparkles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(20)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute animate-pulse"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 2}s`,
-              animationDuration: `${2 + Math.random() * 2}s`
-            }}
-          >
-            <Sparkles className="text-white/30" size={20 + Math.random() * 30} />
-          </div>
-        ))}
-      </div>
+    <div className="absolute inset-0 w-full h-full overflow-hidden flex items-center justify-center bg-gradient-to-b from-pink-300 via-pink-200 to-blue-300">
 
-      {/* Main Menu Card */}
-      <div className="relative z-10 bg-white/95 backdrop-blur-sm rounded-3xl p-6 sm:p-8 lg:p-12 w-full max-w-md sm:max-w-lg lg:max-w-2xl shadow-2xl border-4 border-white my-auto">
-        {/* Title */}
-        <div className="text-center mb-6 sm:mb-8">
-          <h1 className="font-black text-4xl sm:text-5xl lg:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 mb-2 sm:mb-4 animate-pulse leading-tight">
-            ✨ RAINBOW
-          </h1>
-          <h1 className="font-black text-4xl sm:text-5xl lg:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 mb-4 sm:mb-6 leading-tight">
-            SPARKLE RUNNER ✨
-          </h1>
-          <p className="text-gray-700 text-base sm:text-lg font-semibold">
-            Collect the letters, dodge obstacles, and reach Level 10!
-          </p>
+      {/* Main Container Card */}
+      <div className="relative w-full max-w-4xl mx-4 bg-white/20 backdrop-blur-sm border-2 border-black rounded-[2rem] shadow-xl overflow-hidden flex flex-col">
+
+        {/* Top Section: Season Badge */}
+        <div className="flex justify-center py-6 border-b-2 border-black">
+          <div className="flex items-center gap-2 px-4 py-1.5 rounded-full border-2 border-black bg-white/20">
+            <Sparkles size={16} className="text-black" />
+            <span className="text-black text-sm font-bold uppercase tracking-widest">SEASON 1: SPARKLE</span>
+            <Sparkles size={16} className="text-black" />
+          </div>
         </div>
 
-        {/* Current Character Display */}
-        <div className="mb-6 sm:mb-8 p-4 bg-gradient-to-r from-pink-100 to-purple-100 rounded-2xl border-3 border-purple-300">
-          <div className="flex items-center justify-center space-x-3">
-            <div
-              className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border-3 border-white shadow-lg flex-shrink-0"
-              style={{
-                background: `linear-gradient(135deg, ${currentCharacter.primaryColor}, ${currentCharacter.secondaryColor})`,
-              }}
-            />
-            <div className="text-left flex-1 min-w-0">
-              <p className="text-xs sm:text-sm text-gray-600 font-semibold">Playing as:</p>
-              <p className="font-black text-base sm:text-lg text-gray-900">{currentCharacter.name}</p>
+        {/* Character Info Section */}
+        <div className="flex justify-between items-center px-8 py-8 border-b-2 border-black bg-white/5 hover:bg-white/10 transition-colors cursor-pointer" onClick={() => setShowCharacterSelect(true)}>
+            <div className="flex flex-col gap-1">
+                <span className="text-black text-sm font-medium uppercase tracking-wider opacity-80">READY TO RUN</span>
+                <div className="flex items-center gap-2">
+                    <span className="text-yellow-500 text-lg">✨</span>
+                    <span className="text-black text-2xl font-bold">{currentCharacter.name}</span>
+                </div>
             </div>
-          </div>
+
+            <div className="w-12 h-12 rounded-full border-2 border-black flex items-center justify-center bg-white/30 hover:scale-105 transition-transform">
+                <User size={24} className="text-black" />
+            </div>
         </div>
 
-        {/* Menu Buttons */}
-        <div className="flex flex-col space-y-4 sm:space-y-5">
-          {/* Start Game Button - BIG AND PROMINENT */}
-          <button
+        {/* Play Button - Full Width Bar */}
+        <button
             onClick={startGame}
-            className="group relative py-6 sm:py-8 px-8 sm:px-10 bg-gradient-to-br from-pink-500 via-pink-400 to-purple-500 text-white font-black text-3xl sm:text-4xl md:text-5xl rounded-full hover:scale-110 active:scale-95 transition-all shadow-2xl hover:shadow-3xl w-full animate-bounce"
-          >
-            <div className="flex items-center justify-center space-x-3 sm:space-x-4">
-              <Play className="w-8 sm:w-10 h-8 sm:h-10 fill-white flex-shrink-0 animate-pulse" />
-              <span className="truncate">START!</span>
-            </div>
-            {/* Glow Effect */}
-            <div className="absolute inset-0 bg-gradient-to-br from-pink-300 to-purple-300 rounded-full blur-2xl opacity-0 group-hover:opacity-60 transition-opacity -z-10" />
-          </button>
+            className="w-full py-6 bg-white/40 hover:bg-white/60 active:bg-white/80 transition-all border-b-2 border-black flex items-center justify-center group"
+        >
+            <Play size={48} className="text-black fill-transparent stroke-[1.5] group-hover:scale-110 transition-transform" />
+        </button>
 
-          {/* Secondary Buttons - FULL WIDTH AND LARGER */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-            {/* Daily Challenge Button */}
-            <button
-              onClick={() => setShowDailyChallenge(true)}
-              className="group relative py-5 sm:py-6 px-4 sm:px-6 bg-gradient-to-br from-orange-400 via-red-400 to-red-500 text-white font-black text-lg sm:text-xl rounded-3xl hover:scale-110 active:scale-95 transition-all shadow-xl hover:shadow-2xl border-4 border-orange-300"
-            >
-              <div className="flex flex-col items-center justify-center space-y-2">
-                <Flame className="w-7 sm:w-8 h-7 sm:h-8 animate-bounce" style={{ animationDelay: '0s' }} />
-                <span className="font-bold text-base sm:text-lg">🔥 CHALLENGE</span>
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-br from-orange-300 to-red-400 rounded-3xl blur-xl opacity-0 group-hover:opacity-40 transition-opacity -z-10" />
-            </button>
-
-            {/* Character Select Button */}
-            <button
-              onClick={() => setShowCharacterSelect(true)}
-              className="group relative py-5 sm:py-6 px-4 sm:px-6 bg-gradient-to-br from-purple-400 via-pink-400 to-purple-500 text-white font-black text-lg sm:text-xl rounded-3xl hover:scale-110 active:scale-95 transition-all shadow-xl hover:shadow-2xl border-4 border-purple-300"
-            >
-              <div className="flex flex-col items-center justify-center space-y-2">
-                <User className="w-7 sm:w-8 h-7 sm:h-8 animate-bounce" style={{ animationDelay: '0.2s' }} />
-                <span className="font-bold text-base sm:text-lg">👥 CHARACTER</span>
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-300 to-pink-300 rounded-3xl blur-xl opacity-0 group-hover:opacity-40 transition-opacity -z-10" />
-            </button>
-
-            {/* Leaderboard Button */}
-            <button
-              onClick={() => setShowLeaderboard(true)}
-              className="group relative py-5 sm:py-6 px-4 sm:px-6 bg-gradient-to-br from-yellow-400 via-amber-400 to-orange-500 text-white font-black text-lg sm:text-xl rounded-3xl hover:scale-110 active:scale-95 transition-all shadow-xl hover:shadow-2xl border-4 border-yellow-300"
-            >
-              <div className="flex flex-col items-center justify-center space-y-2">
-                <Trophy className="w-7 sm:w-8 h-7 sm:h-8 animate-bounce" style={{ animationDelay: '0.4s' }} />
-                <span className="font-bold text-base sm:text-lg">🏆 TOP SCORES</span>
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-br from-yellow-300 to-orange-400 rounded-3xl blur-xl opacity-0 group-hover:opacity-40 transition-opacity -z-10" />
-            </button>
-          </div>
+        {/* Bottom Navigation Grid */}
+        <div className="grid grid-cols-3 divide-x-2 divide-black">
+            <MenuButton
+                icon={<Flame size={24} />}
+                label="DAILY"
+                onClick={() => setShowDailyChallenge(true)}
+            />
+            <MenuButton
+                icon={<Trophy size={24} />}
+                label="RANKS"
+                onClick={() => setShowLeaderboard(true)}
+            />
+            <MenuButton
+                icon={<User size={24} />}
+                label="HERO"
+                onClick={() => setShowCharacterSelect(true)}
+            />
         </div>
 
-        {/* How to Play */}
-        <div className="mt-6 sm:mt-8 p-4 bg-blue-50 rounded-2xl border-2 border-blue-200">
-          <h3 className="font-bold text-blue-800 mb-2 text-center text-sm sm:text-base">How to Play</h3>
-          <ul className="text-xs sm:text-sm text-blue-700 space-y-1">
-            <li>⬅️ ➡️ <strong>Arrow Keys</strong> or <strong>A/D</strong> - Move</li>
-            <li>⬆️ <strong>Spacebar</strong> or <strong>W</strong> - Jump</li>
-            <li>✨ Collect <strong>S-P-A-R-K-L-E</strong> to level up</li>
-            <li>💎 Grab gems for points</li>
-            <li>❤️ Avoid obstacles</li>
-          </ul>
-        </div>
       </div>
 
-      {/* Daily Challenge Modal */}
-      {showDailyChallenge && (
-        <DailyChallengeUI onClose={() => setShowDailyChallenge(false)} />
-      )}
-
-      {/* Character Selector Modal */}
-      {showCharacterSelect && (
-        <CharacterSelector onClose={() => setShowCharacterSelect(false)} />
-      )}
-
-      {/* Leaderboard Modal */}
-      {showLeaderboard && (
-        <LeaderboardView onClose={() => setShowLeaderboard(false)} />
-      )}
+      {/* Modals */}
+      {showDailyChallenge && <DailyChallengeUI onClose={() => setShowDailyChallenge(false)} />}
+      {showCharacterSelect && <CharacterSelector onClose={() => setShowCharacterSelect(false)} />}
+      {showLeaderboard && <LeaderboardView onClose={() => setShowLeaderboard(false)} />}
     </div>
   );
 };
+
+interface MenuButtonProps {
+    icon: React.ReactNode;
+    label: string;
+    onClick: () => void;
+}
+
+const MenuButton: React.FC<MenuButtonProps> = ({ icon, label, onClick }) => (
+    <button
+        onClick={onClick}
+        className="flex flex-col items-center justify-center gap-2 py-6 hover:bg-white/20 active:bg-white/40 transition-colors group"
+    >
+        <div className="text-black group-hover:scale-110 transition-transform">
+            {icon}
+        </div>
+        <span className="text-black text-xs font-bold uppercase tracking-widest">{label}</span>
+    </button>
+);
