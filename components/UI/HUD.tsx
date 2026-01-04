@@ -69,15 +69,15 @@ const ShopScreen: React.FC = () => {
     }, []);
 
     return (
-        <div className="absolute inset-0 z-[100] flex items-center justify-center pointer-events-auto backdrop-blur-xl bg-black/40">
+        <div className="absolute inset-0 z-[100] flex items-center justify-center pointer-events-auto bg-white/30 backdrop-blur-md">
              <div className="w-full max-w-5xl h-full md:h-auto md:max-h-[90vh] overflow-y-auto p-4 md:p-8 flex flex-col items-center">
-                 <h2 className="text-4xl md:text-6xl font-black text-white mb-2 tracking-tighter text-center drop-shadow-[0_0_15px_rgba(236,72,153,0.8)]">
-                    SPARKLE SHOP
+                 <h2 className="text-4xl md:text-6xl font-black text-black mb-2 tracking-tighter text-center drop-shadow-sm uppercase">
+                    Sparkle Shop
                  </h2>
 
-                 <div className="flex items-center gap-2 bg-black/40 px-6 py-2 rounded-full border border-white/20 mb-8 backdrop-blur-md">
-                     <span className="text-pink-300 text-lg">💎</span>
-                     <span className="text-2xl font-black text-white">{score.toLocaleString()}</span>
+                 <div className="flex items-center gap-2 bg-white px-6 py-2 rounded-full border-2 border-black mb-8 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                     <span className="text-pink-500 text-lg">💎</span>
+                     <span className="text-2xl font-black text-black">{score.toLocaleString()}</span>
                  </div>
 
                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mb-8">
@@ -85,19 +85,19 @@ const ShopScreen: React.FC = () => {
                          const Icon = item.icon;
                          const canAfford = score >= item.cost;
                          return (
-                             <div key={item.id} className="group relative bg-white/10 border border-white/20 p-6 rounded-3xl flex flex-col items-center text-center hover:bg-white/20 hover:border-white/40 transition-all hover:-translate-y-2 duration-300">
-                                 <div className="bg-gradient-to-br from-pink-500/20 to-purple-500/20 p-4 rounded-full mb-4 group-hover:scale-110 transition-transform ring-1 ring-white/20">
-                                     <Icon className="w-8 h-8 text-white" />
+                             <div key={item.id} className="group relative bg-white border-2 border-black p-6 rounded-[2rem] flex flex-col items-center text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all duration-300">
+                                 <div className="bg-pink-100 p-4 rounded-full mb-4 border-2 border-black group-hover:scale-110 transition-transform">
+                                     <Icon className="w-8 h-8 text-black" />
                                  </div>
-                                 <h3 className="text-xl font-black mb-2 text-white tracking-wide">{item.name}</h3>
-                                 <p className="text-white/60 text-sm mb-6 h-10 flex items-center justify-center font-medium leading-tight">{item.description}</p>
+                                 <h3 className="text-xl font-black mb-2 text-black tracking-wide uppercase">{item.name}</h3>
+                                 <p className="text-black/60 text-sm mb-6 h-10 flex items-center justify-center font-medium leading-tight">{item.description}</p>
                                  <button
                                     onClick={() => buyItem(item.id as any, item.cost)}
                                     disabled={!canAfford}
-                                    className={`px-6 py-3 rounded-xl font-bold w-full text-sm uppercase tracking-wider transition-all
+                                    className={`px-6 py-3 rounded-xl font-bold w-full text-sm uppercase tracking-wider transition-all border-2 border-black
                                         ${canAfford
-                                            ? 'bg-white text-black hover:bg-pink-500 hover:text-white shadow-lg'
-                                            : 'bg-white/5 text-white/30 cursor-not-allowed border border-white/5'}`}
+                                            ? 'bg-black text-white hover:bg-neutral-800 shadow-md'
+                                            : 'bg-gray-200 text-gray-400 cursor-not-allowed border-gray-300'}`}
                                  >
                                      {item.cost} Sparkles
                                  </button>
@@ -108,7 +108,7 @@ const ShopScreen: React.FC = () => {
 
                  <button
                     onClick={closeShop}
-                    className="flex items-center gap-3 px-10 py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-black text-xl rounded-2xl hover:scale-105 transition-all shadow-[0_0_30px_rgba(236,72,153,0.4)]"
+                    className="flex items-center gap-3 px-10 py-4 bg-black text-white font-black text-xl rounded-2xl hover:scale-105 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] border-2 border-black active:translate-y-[2px] active:shadow-none"
                  >
                      CONTINUE RUNNING <Play size={24} fill="currentColor" />
                  </button>
@@ -179,32 +179,30 @@ export const HUD: React.FC = () => {
 
       return (
           <div className="absolute inset-0 w-full h-full z-[100] pointer-events-auto flex items-center justify-center p-4">
-              {/* Dark Glass Backdrop */}
-              <div className="absolute inset-0 bg-black/80 backdrop-blur-md"></div>
+              {/* Light Glass Backdrop */}
+              <div className="absolute inset-0 bg-white/40 backdrop-blur-md"></div>
 
               <div className="relative w-full max-w-md flex flex-col items-center gap-6 animate-in zoom-in duration-300">
                 {/* Banners */}
                 {isNewHighScore && (
-                  <div className="px-6 py-2 bg-yellow-400 text-black font-black text-sm uppercase tracking-widest rounded-full animate-bounce shadow-[0_0_20px_rgba(250,204,21,0.6)]">
+                  <div className="px-6 py-2 bg-yellow-400 border-2 border-black text-black font-black text-sm uppercase tracking-widest rounded-full animate-bounce shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                     🏆 New High Score!
                   </div>
                 )}
                 {challengeCompleted && (
-                  <div className="px-6 py-2 bg-orange-500 text-white font-black text-sm uppercase tracking-widest rounded-full animate-pulse shadow-[0_0_20px_rgba(249,115,22,0.6)]">
+                  <div className="px-6 py-2 bg-orange-500 border-2 border-black text-white font-black text-sm uppercase tracking-widest rounded-full animate-pulse shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                     🔥 Daily Challenge Complete!
                   </div>
                 )}
 
                 {/* Main Card */}
-                <div className="w-full bg-[#1a1b2e] border border-white/10 p-8 rounded-[2rem] shadow-2xl flex flex-col items-center gap-6 relative overflow-hidden">
-                    {/* Background Glow */}
-                    <div className={`absolute top-0 inset-x-0 h-1 bg-gradient-to-r ${isVictory ? 'from-green-400 via-emerald-500 to-teal-500' : 'from-pink-500 via-red-500 to-purple-500'}`}></div>
+                <div className="w-full bg-white border-2 border-black p-8 rounded-[2rem] shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex flex-col items-center gap-6 relative overflow-hidden">
 
                     <div className="text-center">
-                        <h1 className={`text-5xl font-black mb-2 text-transparent bg-clip-text bg-gradient-to-b ${isVictory ? 'from-white to-emerald-200' : 'from-white to-pink-200'}`}>
+                        <h1 className={`text-5xl font-black mb-2 text-black uppercase tracking-tight`}>
                             {title}
                         </h1>
-                        <p className="text-white/50 text-sm font-medium uppercase tracking-wide">{subtitle}</p>
+                        <p className="text-black/50 text-sm font-medium uppercase tracking-wide">{subtitle}</p>
                     </div>
 
                     {/* Stats Grid */}
@@ -219,14 +217,14 @@ export const HUD: React.FC = () => {
                     <div className="flex gap-3 w-full mt-2">
                         <button
                             onClick={() => setShowShareScore(true)}
-                            className="flex-1 py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl font-bold text-white transition-colors"
+                            className="flex-1 py-4 bg-white hover:bg-gray-50 border-2 border-black rounded-xl font-bold text-black transition-colors shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-[2px] active:shadow-none"
                         >
                             SHARE
                         </button>
                         <button
                             onClick={() => { audio.init(); restartGame(); }}
-                            className={`flex-[2] py-4 rounded-xl font-black text-lg shadow-lg hover:brightness-110 active:scale-95 transition-all text-white
-                                ${isVictory ? 'bg-gradient-to-r from-emerald-500 to-teal-500' : 'bg-gradient-to-r from-pink-500 to-purple-600'}`}
+                            className={`flex-[2] py-4 rounded-xl font-black text-lg shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[-1px] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] active:translate-y-[2px] active:shadow-none transition-all text-white border-2 border-black
+                                ${isVictory ? 'bg-emerald-500' : 'bg-pink-500'}`}
                         >
                             PLAY AGAIN
                         </button>
@@ -247,21 +245,21 @@ export const HUD: React.FC = () => {
             {/* Score & Level */}
             <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-3">
-                    <div className="bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl px-5 py-2 flex items-center gap-3">
-                        <div className="w-2 h-2 rounded-full bg-yellow-400 animate-pulse shadow-[0_0_10px_rgba(250,204,21,0.8)]"></div>
-                        <span className="font-black text-3xl text-white tracking-tight">{score.toLocaleString()}</span>
+                    <div className="bg-white/80 backdrop-blur-md border-2 border-black rounded-2xl px-5 py-2 flex items-center gap-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                        <div className="w-2 h-2 rounded-full bg-yellow-400 border border-black animate-pulse"></div>
+                        <span className="font-black text-3xl text-black tracking-tight">{score.toLocaleString()}</span>
                     </div>
                 </div>
 
                 {/* Level Progress */}
-                <div className="bg-black/40 backdrop-blur-md border border-white/10 rounded-xl px-4 py-2 flex flex-col gap-1 w-48">
-                    <div className="flex justify-between text-[10px] font-bold uppercase tracking-wider text-white/70">
+                <div className="bg-white/80 backdrop-blur-md border-2 border-black rounded-xl px-4 py-2 flex flex-col gap-1 w-48 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                    <div className="flex justify-between text-[10px] font-bold uppercase tracking-wider text-black/70">
                         <span>Level {level}</span>
                         <span>10</span>
                     </div>
-                    <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                    <div className="w-full h-2 bg-black/10 rounded-full overflow-hidden border border-black/10">
                         <div
-                            className="h-full bg-gradient-to-r from-pink-500 to-purple-500 transition-all duration-500"
+                            className="h-full bg-pink-500 transition-all duration-500"
                             style={{ width: `${(level / 10) * 100}%` }}
                         />
                     </div>
@@ -271,18 +269,18 @@ export const HUD: React.FC = () => {
             {/* Lives & Gems & Volume */}
             <div className="flex flex-col gap-3 items-end pointer-events-auto">
                 <div className="flex gap-3">
-                    <div className="bg-black/40 backdrop-blur-md border border-white/10 rounded-xl px-4 py-2 flex items-center gap-2">
-                        <Heart className="text-red-500 fill-red-500" size={18} />
-                        <span className="font-black text-xl text-white">{lives}/{maxLives}</span>
+                    <div className="bg-white/80 backdrop-blur-md border-2 border-black rounded-xl px-4 py-2 flex items-center gap-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                        <Heart className="text-red-500 fill-red-500 stroke-black" size={18} />
+                        <span className="font-black text-xl text-black">{lives}/{maxLives}</span>
                     </div>
 
-                    <div className="bg-black/40 backdrop-blur-md border border-white/10 rounded-xl px-4 py-2 flex items-center gap-2">
+                    <div className="bg-white/80 backdrop-blur-md border-2 border-black rounded-xl px-4 py-2 flex items-center gap-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                         <span className="text-lg">💎</span>
-                        <span className="font-black text-xl text-white">{gemsCollected}</span>
+                        <span className="font-black text-xl text-black">{gemsCollected}</span>
                     </div>
                 </div>
 
-                <div className="bg-black/40 backdrop-blur-md border border-white/10 rounded-xl p-2 hover:bg-black/60 transition-colors">
+                <div className="bg-white/80 backdrop-blur-md border-2 border-black rounded-xl p-2 hover:bg-white transition-colors shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                     <VolumeControl />
                 </div>
             </div>
@@ -298,11 +296,11 @@ export const HUD: React.FC = () => {
                     return (
                         <div
                             key={idx}
-                            className={`w-10 h-12 sm:w-12 sm:h-14 flex items-center justify-center rounded-xl border-2 font-black text-xl shadow-lg transition-all duration-300
+                            className={`w-10 h-12 sm:w-12 sm:h-14 flex items-center justify-center rounded-xl border-2 font-black text-xl shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all duration-300
                                 ${isCollected
-                                    ? 'bg-white border-white scale-110 -translate-y-1'
-                                    : 'bg-black/30 border-white/10 text-white/20'}`}
-                            style={isCollected ? { color: color, boxShadow: `0 0 20px ${color}` } : {}}
+                                    ? 'bg-white border-black scale-110 -translate-y-1'
+                                    : 'bg-black/10 border-black/20 text-black/20'}`}
+                            style={isCollected ? { color: color } : {}}
                         >
                             {char}
                         </div>
@@ -311,7 +309,7 @@ export const HUD: React.FC = () => {
             </div>
 
             {combo > 1 && (
-                <div className="animate-bounce bg-gradient-to-r from-orange-500 to-red-600 text-white px-6 py-1 rounded-full font-black text-xl shadow-lg border border-white/20 tracking-wider">
+                <div className="animate-bounce bg-orange-500 text-white px-6 py-1 rounded-full font-black text-xl shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] border-2 border-black tracking-wider">
                     {combo}x COMBO
                 </div>
             )}
@@ -321,16 +319,16 @@ export const HUD: React.FC = () => {
         <div className="w-full flex justify-between items-end">
             <div className="flex gap-3">
                 {isImmortalityActive && (
-                    <div className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-4 py-2 rounded-xl font-bold flex items-center gap-2 shadow-lg animate-pulse border border-white/20">
-                        <Shield size={16} className="fill-white" />
+                    <div className="bg-indigo-500 text-white px-4 py-2 rounded-xl font-bold flex items-center gap-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] animate-pulse border-2 border-black">
+                        <Shield size={16} className="fill-white stroke-black" />
                         SHIELD ACTIVE
                     </div>
                 )}
             </div>
 
-            <div className="bg-black/40 backdrop-blur-md border border-white/10 rounded-xl px-4 py-2 flex items-center gap-2">
-                 <Zap className="text-yellow-400 fill-yellow-400" size={16} />
-                 <span className="font-bold text-white text-sm">
+            <div className="bg-white/80 backdrop-blur-md border-2 border-black rounded-xl px-4 py-2 flex items-center gap-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                 <Zap className="text-yellow-400 fill-yellow-400 stroke-black" size={16} />
+                 <span className="font-bold text-black text-sm">
                      {Math.round((speed / RUN_SPEED_BASE) * 100)}% SPEED
                  </span>
             </div>
@@ -344,11 +342,11 @@ export const HUD: React.FC = () => {
 };
 
 const StatBox = ({ label, value, icon }: { label: string, value: string, icon: string }) => (
-    <div className="bg-white/5 rounded-xl p-3 border border-white/5 flex flex-col items-center justify-center gap-1">
-        <span className="text-[10px] text-white/40 font-bold uppercase tracking-wider">{label}</span>
+    <div className="bg-gray-50 rounded-xl p-3 border-2 border-black flex flex-col items-center justify-center gap-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+        <span className="text-[10px] text-black/40 font-bold uppercase tracking-wider">{label}</span>
         <div className="flex items-center gap-1.5">
-            <span className="text-sm opacity-80">{icon}</span>
-            <span className="text-lg font-black text-white">{value}</span>
+            <span className="text-sm opacity-100">{icon}</span>
+            <span className="text-lg font-black text-black">{value}</span>
         </div>
     </div>
 );

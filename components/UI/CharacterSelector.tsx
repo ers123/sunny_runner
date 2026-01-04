@@ -16,22 +16,20 @@ export const CharacterSelector: React.FC<CharacterSelectorProps> = ({ onClose })
   const { selectedCharacter, unlockedCharacters, selectCharacter, score } = useStore();
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
-      {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/80 backdrop-blur-md transition-opacity" onClick={onClose} />
+    <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/20 backdrop-blur-sm">
 
-      {/* Glass Container */}
-      <div className="relative w-full max-w-4xl max-h-[90vh] bg-[#1a1b2e] border border-white/10 rounded-[2.5rem] p-6 sm:p-8 shadow-2xl overflow-hidden flex flex-col">
+      {/* Main Container */}
+      <div className="relative w-full max-w-4xl max-h-[90vh] bg-white border-2 border-black rounded-[2.5rem] p-6 sm:p-8 shadow-2xl overflow-hidden flex flex-col animate-in zoom-in duration-300">
 
         {/* Header */}
-        <div className="flex justify-between items-center mb-8 flex-shrink-0">
+        <div className="flex justify-between items-center mb-8 flex-shrink-0 border-b-2 border-black pb-4">
           <div>
-            <h2 className="text-4xl font-black text-white tracking-tight mb-1">Select Runner</h2>
-            <p className="text-white/50 text-sm font-medium">Choose your sparkle champion</p>
+            <h2 className="text-4xl font-black text-black tracking-tight mb-1 uppercase">Select Runner</h2>
+            <p className="text-black/50 text-sm font-medium">Choose your sparkle champion</p>
           </div>
           <button
             onClick={onClose}
-            className="p-3 bg-white/5 hover:bg-white/10 rounded-full text-white/70 hover:text-white transition-colors border border-white/5"
+            className="p-3 bg-white hover:bg-gray-100 rounded-full text-black transition-colors border-2 border-black"
           >
             <X size={24} />
           </button>
@@ -47,34 +45,33 @@ export const CharacterSelector: React.FC<CharacterSelectorProps> = ({ onClose })
               <div
                 key={char.id}
                 onClick={() => isUnlocked && selectCharacter(char.id)}
-                className={`group relative overflow-hidden rounded-3xl transition-all duration-300 border
+                className={`group relative overflow-hidden rounded-[2rem] transition-all duration-300 border-2
                   ${isSelected
-                    ? 'bg-white/10 border-pink-500/50 ring-2 ring-pink-500 ring-offset-2 ring-offset-[#1a1b2e]'
+                    ? 'bg-white border-black ring-4 ring-pink-300 ring-offset-2'
                     : isUnlocked
-                      ? 'bg-white/5 border-white/10 hover:border-white/30 hover:bg-white/10 cursor-pointer'
-                      : 'bg-black/40 border-white/5 opacity-60 cursor-not-allowed'
+                      ? 'bg-white border-black hover:translate-y-[-4px] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] cursor-pointer'
+                      : 'bg-gray-100 border-gray-300 opacity-80 cursor-not-allowed'
                   }
                 `}
               >
                 {/* Character Preview Gradient */}
                 <div
-                  className={`h-32 w-full relative transition-transform duration-500 ${isUnlocked && 'group-hover:scale-105'}`}
+                  className={`h-32 w-full relative transition-transform duration-500 border-b-2 border-black`}
                   style={{
                     background: isUnlocked
                       ? `linear-gradient(135deg, ${char.primaryColor}, ${char.secondaryColor})`
-                      : '#1a1a1a'
+                      : '#e5e5e5'
                   }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#1a1b2e] to-transparent opacity-90"></div>
 
                   {/* Status Icon */}
                   <div className="absolute top-4 right-4">
                     {isSelected ? (
-                      <div className="bg-green-500 text-white p-1.5 rounded-full shadow-lg">
+                      <div className="bg-emerald-400 text-white p-1.5 rounded-full border-2 border-black shadow-sm">
                         <Check size={16} strokeWidth={4} />
                       </div>
                     ) : !isUnlocked ? (
-                      <div className="bg-black/50 text-white/50 p-2 rounded-full backdrop-blur-sm">
+                      <div className="bg-black/20 text-black/50 p-2 rounded-full backdrop-blur-sm border-2 border-black/10">
                         <Lock size={16} />
                       </div>
                     ) : null}
@@ -82,34 +79,26 @@ export const CharacterSelector: React.FC<CharacterSelectorProps> = ({ onClose })
                 </div>
 
                 {/* Info Content */}
-                <div className="p-5 relative -mt-12">
-                   <h3 className="text-2xl font-black text-white mb-1">{char.name}</h3>
-                   <p className="text-white/60 text-xs font-medium leading-relaxed mb-4 min-h-[40px]">
+                <div className="p-5 relative">
+                   <h3 className="text-2xl font-black text-black mb-1 uppercase tracking-tight">{char.name}</h3>
+                   <p className="text-black/60 text-xs font-bold leading-relaxed mb-4 min-h-[40px]">
                      {char.description}
                    </p>
 
                    {/* Stats / Unlock Info */}
                    {!isUnlocked ? (
-                     <div className="bg-black/40 rounded-xl p-3 border border-white/5">
-                        <p className="text-xs text-white/40 uppercase font-bold mb-1">Unlock Requirement</p>
-                        <p className="text-pink-400 font-bold text-sm">{char.unlockCondition}</p>
+                     <div className="bg-gray-100 rounded-xl p-3 border-2 border-gray-300">
+                        <p className="text-xs text-black/40 uppercase font-bold mb-1">Unlock Requirement</p>
+                        <p className="text-pink-600 font-bold text-sm">{char.unlockCondition}</p>
                      </div>
                    ) : (
                      <div className="space-y-2">
-                        <div className="flex items-center justify-between text-xs font-bold">
-                            <span className="text-white/40 uppercase">Speed</span>
-                            <div className="flex gap-0.5">
-                                {[...Array(5)].map((_, i) => (
-                                    <div key={i} className={`w-8 h-1.5 rounded-full ${i < 4 ? 'bg-white' : 'bg-white/20'}`}></div>
-                                ))}
-                            </div>
-                        </div>
                         {isSelected ? (
-                            <div className="w-full py-3 bg-white text-black text-center font-black rounded-xl text-sm uppercase tracking-wide">
+                            <div className="w-full py-3 bg-black text-white text-center font-black rounded-xl text-sm uppercase tracking-wide shadow-md">
                                 Selected
                             </div>
                         ) : (
-                            <button className="w-full py-3 bg-white/10 hover:bg-white text-white hover:text-black text-center font-bold rounded-xl text-sm uppercase tracking-wide transition-all border border-white/10">
+                            <button className="w-full py-3 bg-white hover:bg-black hover:text-white text-black text-center font-bold rounded-xl text-sm uppercase tracking-wide transition-all border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-[2px] active:shadow-none">
                                 Select
                             </button>
                         )}

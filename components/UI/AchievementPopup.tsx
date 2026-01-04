@@ -26,10 +26,10 @@ export const showAchievement = (title: string, iconType: 'trophy' | 'star' | 'za
   };
 
   const colors = {
-    trophy: 'from-yellow-400 to-orange-400',
-    star: 'from-purple-400 to-pink-400',
-    zap: 'from-blue-400 to-cyan-400',
-    award: 'from-green-400 to-emerald-400'
+    trophy: 'bg-yellow-400',
+    star: 'bg-purple-400',
+    zap: 'bg-blue-400',
+    award: 'bg-emerald-400'
   };
 
   currentAchievement = {
@@ -65,14 +65,14 @@ export const AchievementPopup: React.FC = () => {
   const Icon = achievement.icon;
 
   return (
-    <div className="absolute top-24 md:top-32 left-1/2 transform -translate-x-1/2 z-[300] animate-bounce-in">
-      <div className={`bg-gradient-to-r ${achievement.color} text-white px-6 py-4 rounded-2xl shadow-2xl border-4 border-white flex items-center space-x-3`}>
-        <div className="bg-white/20 p-2 rounded-full">
+    <div className="absolute top-24 md:top-32 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[300] animate-bounce-in">
+      <div className={`${achievement.color} text-black px-6 py-4 rounded-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] border-2 border-black flex items-center space-x-3`}>
+        <div className="bg-white p-2 rounded-full border-2 border-black">
           <Icon className="w-6 h-6 md:w-8 md:h-8" />
         </div>
         <div>
-          <div className="text-xs font-semibold opacity-80">🎉 ACHIEVEMENT!</div>
-          <div className="text-lg md:text-xl font-black">{achievement.title}</div>
+          <div className="text-[10px] font-bold uppercase tracking-widest opacity-80">Achievement Unlocked!</div>
+          <div className="text-lg md:text-xl font-black uppercase tracking-tight">{achievement.title}</div>
         </div>
       </div>
 
@@ -80,14 +80,14 @@ export const AchievementPopup: React.FC = () => {
         @keyframes bounce-in {
           0% {
             opacity: 0;
-            transform: translateY(-100px) scale(0.5);
+            transform: translate(-50%, -100px) scale(0.5);
           }
           50% {
             opacity: 1;
-            transform: translateY(10px) scale(1.1);
+            transform: translate(-50%, 10px) scale(1.1);
           }
           100% {
-            transform: translateY(0) scale(1);
+            transform: translate(-50%, 0) scale(1);
           }
         }
         .animate-bounce-in {

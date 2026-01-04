@@ -20,104 +20,62 @@ export const MainMenu: React.FC = () => {
   const currentCharacter = CHARACTERS[selectedCharacter];
 
   return (
-    <div className="absolute inset-0 w-full h-full overflow-hidden flex items-center justify-center">
-      {/* Cinematic Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 animate-gradient-xy">
-          {/* Animated Orbs */}
-          <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
-          <div className="absolute top-[-10%] right-[-10%] w-96 h-96 bg-yellow-300 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
-          <div className="absolute bottom-[-20%] left-[20%] w-96 h-96 bg-pink-400 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000"></div>
+    <div className="absolute inset-0 w-full h-full overflow-hidden flex items-center justify-center bg-gradient-to-b from-pink-300 via-pink-200 to-blue-300">
 
-          {/* Sparkle Overlay */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
-            {[...Array(15)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute animate-pulse"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 3}s`,
-                  animationDuration: `${2 + Math.random() * 2}s`
-                }}
-              >
-                <Sparkles className="text-white" size={10 + Math.random() * 20} />
-              </div>
-            ))}
-          </div>
-      </div>
+      {/* Main Container Card */}
+      <div className="relative w-full max-w-4xl mx-4 bg-white/20 backdrop-blur-sm border-2 border-black rounded-[2rem] shadow-xl overflow-hidden flex flex-col">
 
-      {/* Glassmorphism Main Card */}
-      <div className="relative z-10 w-full max-w-md mx-4 p-8 rounded-[2.5rem] bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] flex flex-col items-center gap-8">
-
-        {/* Title Section */}
-        <div className="text-center relative">
-          <h1 className="text-6xl sm:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-white/70 drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] tracking-tighter leading-[0.9]">
-            RAINBOW
-            <br />
-            <span className="text-4xl sm:text-5xl tracking-normal text-pink-300 bg-clip-text">RUNNER</span>
-          </h1>
-          <div className="mt-4 inline-flex items-center gap-2 bg-black/20 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/10">
-            <Sparkles size={14} className="text-yellow-300" />
-            <span className="text-white/90 text-xs font-bold uppercase tracking-widest">Season 1: Sparkle</span>
-            <Sparkles size={14} className="text-yellow-300" />
+        {/* Top Section: Season Badge */}
+        <div className="flex justify-center py-6 border-b-2 border-black">
+          <div className="flex items-center gap-2 px-4 py-1.5 rounded-full border-2 border-black bg-white/20">
+            <Sparkles size={16} className="text-black" />
+            <span className="text-black text-sm font-bold uppercase tracking-widest">SEASON 1: SPARKLE</span>
+            <Sparkles size={16} className="text-black" />
           </div>
         </div>
 
-        {/* Character Quick View */}
-        <div
-            onClick={() => setShowCharacterSelect(true)}
-            className="w-full bg-gradient-to-r from-white/10 to-white/5 hover:from-white/20 hover:to-white/10 p-4 rounded-3xl border border-white/10 transition-all cursor-pointer group flex items-center gap-4"
-        >
-            <div
-                className="w-16 h-16 rounded-2xl shadow-lg border-2 border-white/30 group-hover:scale-105 transition-transform"
-                style={{ background: `linear-gradient(135deg, ${currentCharacter.primaryColor}, ${currentCharacter.secondaryColor})` }}
-            />
-            <div className="flex-1">
-                <p className="text-white/60 text-xs font-bold uppercase tracking-wider mb-0.5">Ready to run</p>
-                <p className="text-white font-bold text-xl">{currentCharacter.name}</p>
-            </div>
-            <div className="bg-white/10 p-2 rounded-full group-hover:bg-white/20 transition-colors">
-                <User className="text-white" size={20} />
-            </div>
-        </div>
-
-        {/* Main Action Buttons */}
-        <div className="w-full space-y-4">
-            {/* Play Button */}
-            <button
-                onClick={startGame}
-                className="w-full group relative h-20"
-            >
-                <div className="absolute inset-0 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 rounded-3xl blur opacity-75 group-hover:opacity-100 transition duration-500 group-hover:duration-200 animate-tilt"></div>
-                <div className="relative h-full bg-white rounded-3xl flex items-center justify-center gap-4 border border-white/50 shadow-xl transform group-hover:-translate-y-1 transition-all duration-200">
-                    <Play className="fill-purple-600 text-purple-600" size={32} />
-                    <span className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 tracking-wider">START GAME</span>
+        {/* Character Info Section */}
+        <div className="flex justify-between items-center px-8 py-8 border-b-2 border-black bg-white/5 hover:bg-white/10 transition-colors cursor-pointer" onClick={() => setShowCharacterSelect(true)}>
+            <div className="flex flex-col gap-1">
+                <span className="text-black text-sm font-medium uppercase tracking-wider opacity-80">READY TO RUN</span>
+                <div className="flex items-center gap-2">
+                    <span className="text-yellow-500 text-lg">✨</span>
+                    <span className="text-black text-2xl font-bold">{currentCharacter.name}</span>
                 </div>
-            </button>
+            </div>
 
-            {/* Grid Menu */}
-            <div className="grid grid-cols-3 gap-3">
-                <MenuButton
-                    icon={<Flame size={24} />}
-                    label="Daily"
-                    color="text-orange-400"
-                    onClick={() => setShowDailyChallenge(true)}
-                />
-                <MenuButton
-                    icon={<Trophy size={24} />}
-                    label="Ranks"
-                    color="text-yellow-400"
-                    onClick={() => setShowLeaderboard(true)}
-                />
-                <MenuButton
-                    icon={<User size={24} />}
-                    label="Hero"
-                    color="text-blue-400"
-                    onClick={() => setShowCharacterSelect(true)}
-                />
+            <div className="w-12 h-12 rounded-full border-2 border-black flex items-center justify-center bg-white/30 hover:scale-105 transition-transform">
+                <User size={24} className="text-black" />
             </div>
         </div>
+
+        {/* Play Button - Full Width Bar */}
+        <button
+            onClick={startGame}
+            className="w-full py-6 bg-white/40 hover:bg-white/60 active:bg-white/80 transition-all border-b-2 border-black flex items-center justify-center group"
+        >
+            <Play size={48} className="text-black fill-transparent stroke-[1.5] group-hover:scale-110 transition-transform" />
+        </button>
+
+        {/* Bottom Navigation Grid */}
+        <div className="grid grid-cols-3 divide-x-2 divide-black">
+            <MenuButton
+                icon={<Flame size={24} />}
+                label="DAILY"
+                onClick={() => setShowDailyChallenge(true)}
+            />
+            <MenuButton
+                icon={<Trophy size={24} />}
+                label="RANKS"
+                onClick={() => setShowLeaderboard(true)}
+            />
+            <MenuButton
+                icon={<User size={24} />}
+                label="HERO"
+                onClick={() => setShowCharacterSelect(true)}
+            />
+        </div>
+
       </div>
 
       {/* Modals */}
@@ -132,17 +90,16 @@ interface MenuButtonProps {
     icon: React.ReactNode;
     label: string;
     onClick: () => void;
-    color: string;
 }
 
-const MenuButton: React.FC<MenuButtonProps> = ({ icon, label, onClick, color }) => (
+const MenuButton: React.FC<MenuButtonProps> = ({ icon, label, onClick }) => (
     <button
         onClick={onClick}
-        className="flex flex-col items-center justify-center gap-2 bg-black/20 hover:bg-black/30 backdrop-blur-md rounded-2xl p-4 border border-white/5 transition-all active:scale-95 group"
+        className="flex flex-col items-center justify-center gap-2 py-6 hover:bg-white/20 active:bg-white/40 transition-colors group"
     >
-        <div className={`transform group-hover:scale-110 transition-transform ${color} drop-shadow-lg`}>
+        <div className="text-black group-hover:scale-110 transition-transform">
             {icon}
         </div>
-        <span className="text-white/90 text-xs font-bold uppercase tracking-wide">{label}</span>
+        <span className="text-black text-xs font-bold uppercase tracking-widest">{label}</span>
     </button>
 );
